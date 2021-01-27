@@ -7,7 +7,7 @@ package model.data_structures;
  * @author Fernando De la Rosa
  *
  */
-public class ArregloDinamico <T extends Comparable<T>> implements IArregloDinamico {
+public abstract class ArregloDinamico <T extends Comparable<T>> implements IArregloDinamico {
 	/**
 	 * Capacidad maxima del arreglo
 	 */
@@ -19,7 +19,7 @@ public class ArregloDinamico <T extends Comparable<T>> implements IArregloDinami
     /**
      * Arreglo de elementos de tamaNo maximo
      */
-    private Object elementos[ ];
+    private T elementos[ ];
 
     /**
      * Construir un arreglo con la capacidad maxima inicial.
@@ -27,18 +27,18 @@ public class ArregloDinamico <T extends Comparable<T>> implements IArregloDinami
      */
 	public ArregloDinamico( int max )
     {
-           elementos = new Object[max];
+           elementos = (T[]) new Comparable[max];
            tamanoMax = max;
            tamanoAct = 0;
     }
     
-	public void agregar( Object dato )
+	public void agregar( T dato )
     {
            if ( tamanoAct == tamanoMax )
            {  // caso de arreglo lleno (aumentar tamaNo)
                 tamanoMax = 2 * tamanoMax;
-                Object [ ] copy = elementos;
-                elementos = new Object[tamanoMax];
+                T [ ] copy = elementos;
+                elementos = (T[]) new Comparable[tamanoMax];
                 for ( int i = 0; i < tamanoAct; i++)
                 {
                  	 elementos[i] = copy[i];
@@ -57,7 +57,7 @@ public class ArregloDinamico <T extends Comparable<T>> implements IArregloDinami
 		return tamanoAct;
 	}
 
-	public Object darElemento(int i) {
+	public T darElemento(int i) {
 		// TODO implementar
 		if(i<0 || i>=tamanoAct)
 		{
@@ -70,7 +70,7 @@ public class ArregloDinamico <T extends Comparable<T>> implements IArregloDinami
 		
 	}
 
-	public Object buscar(Object dato) {
+	public T buscar(T dato) {
 		// TODO implementar
 		// Recomendacion: Usar el criterio de comparacion natural (metodo compareTo()) definido en Strings.
 		
