@@ -7,106 +7,106 @@ package model.data_structures;
  * @author Fernando De la Rosa
  *
  */
-public abstract class ArregloDinamico <T extends Comparable<T>> implements IArregloDinamico {
-	/**
-	 * Capacidad maxima del arreglo
-	 */
-    private int tamanoMax;
-	/**
-	 * Numero de elementos presentes en el arreglo (de forma compacta desde la posicion 0)
-	 */
-    private int tamanoAct;
-    /**
-     * Arreglo de elementos de tamaNo maximo
-     */
-    private T elementos[ ];
+public class ArregloDinamico <T> implements IArregloDinamico<T> {
+		/**
+		 * Capacidad maxima del arreglo
+		 */
+        private int tamanoMax;
+		/**
+		 * Numero de elementos presentes en el arreglo (de forma compacta desde la posicion 0)
+		 */
+        private int tamanoAct;
+        /**
+         * Arreglo de elementos de tamaNo maximo
+         */
+        private T elementos[ ];
 
-    /**
-     * Construir un arreglo con la capacidad maxima inicial.
-     * @param max Capacidad maxima inicial
-     */
-	public ArregloDinamico( int max )
-    {
-           elementos = (T[]) new Comparable[max];
-           tamanoMax = max;
-           tamanoAct = 0;
-    }
-    
-	public void agregar( T dato )
-    {
-           if ( tamanoAct == tamanoMax )
-           {  // caso de arreglo lleno (aumentar tamaNo)
-                tamanoMax = 2 * tamanoMax;
-                T [ ] copy = elementos;
-                elementos = (T[]) new Comparable[tamanoMax];
-                for ( int i = 0; i < tamanoAct; i++)
-                {
-                 	 elementos[i] = copy[i];
-                } 
-        	    System.out.println("Arreglo lleno: " + tamanoAct + " - Arreglo duplicado: " + tamanoMax);
-           }	
-           elementos[tamanoAct] = dato;
-           tamanoAct++;
-   }
+        /**
+         * Construir un arreglo con la capacidad maxima inicial.
+         * @param max Capacidad maxima inicial
+         */
+		public ArregloDinamico( int max )
+        {
+               elementos = (T[]) new Object[max];
+               tamanoMax = max;
+               tamanoAct = 0;
+        }
+        @Override
+		public void agregar(T dato )
+        {
+               if ( tamanoAct == tamanoMax )
+               {  // caso de arreglo lleno (aumentar tamaNo)
+                    tamanoMax = 2 * tamanoMax;
+                    T[]  copia = elementos;
+                    elementos = (T[]) new Object[tamanoMax];
+                    for ( int i = 0; i < tamanoAct; i++)
+                    {
+                     	 elementos[i] = copia[i];
+                    } 
+            	    System.out.println("Arreglo lleno: " + tamanoAct + " - Arreglo duplicado: " + tamanoMax);
+               }	
+               elementos[tamanoAct] = dato;
+               tamanoAct++;
+       }
 
-	public int darCapacidad() {
-		return tamanoMax;
-	}
-
-	public int darTamano() {
-		return tamanoAct;
-	}
-
-	public T darElemento(int i) {
-		// TODO implementar
-		if(i<0 || i>=tamanoAct)
-		{
-			return null;
+		public int darCapacidad() {
+			return tamanoMax;
 		}
-		else
-		{
+
+		public int darTamano() {
+			return tamanoAct;
+		}
+
+		public T darElemento(int i) {
+			// TODO implementar
+			
 			return elementos[i];
 		}
-		
-	}
 
-	public T buscar(T dato) {
-		// TODO implementar
-		// Recomendacion: Usar el criterio de comparacion natural (metodo compareTo()) definido en Strings.
-		
-		boolean encontro = true;
-		for (int i = 0; i < elementos.length && encontro; i++) 
-		{
-				if(((Comparable<T>) elementos[i]).compareTo((T) dato)==0)
+		public T buscar(T dato) {
+			// TODO implementar
+			// Recomendacion: Usar el criterio de comparacion natural (metodo compareTo()) definido en Strings.
+			T buscado = null;
+			for (int i = 0; i < elementos.length; i++) {
+				if(elementos[i].equals(dato))
 				{
-					encontro = false;
-					return elementos[i];
+					buscado=elementos[i];
 				}
+			}
+			return buscado;
 		}
-		return null;
-	}
 
-	public Object eliminar(Object dato) {
-		// TODO implementar
-		// Recomendacion: Usar el criterio de comparacion natural (metodo compareTo()) definido en Strings.
-		boolean encontro = true;
-		
-		Object respuesta = null;
-		
-		for (int i = 0; i < elementos.length && encontro; i++) 
-		{
-				if(((Comparable<T>) elementos[i]).compareTo((T) dato)==0)
+		public T eliminar(T dato) {
+			// TODO implementar
+			// Recomendacion: Usar el criterio de comparacion natural (metodo compareTo()) definido en Strings.
+			T[] copia = (T[])new Object[tamanoMax-1];
+			int pos=-1;
+			for (int i = 0; i < elementos.length; i++) 
+			{
+				if(elementos[i].equals(dato))
 				{
-					encontro = false;
-					
-					respuesta = elementos[i];
-					
-					elementos[i]=null;
+					pos=i;
 				}
+			}
+			for (int i = 0; i < elementos.length && pos!=-1; i++) {
+				if(i!=pos )
+				{
+					if(i<pos)
+					{
+						copia[i]=elementos[i];
+					}
+					else
+					{
+						copia[i-1]=elementos[i];
+					}
+				}
+			}
+			tamanoMax=tamanoMax-1;
+			elementos=(T[])new Object[tamanoMax=tamanoMax-1];
+			for (int i = 0; i < copia.length; i++) {
+				elementos[i]=copia[i];
+			}
+			return dato;
 		}
-		return respuesta;
-	}
-
-	
 
 }
