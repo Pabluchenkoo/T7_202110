@@ -7,6 +7,7 @@ package model.data_structures;
  * @author Fernando De la Rosa
  *
  */
+<<<<<<< HEAD
 public class ArregloDinamico <T> implements IArregloDinamico<T> {
 	/**
 	 * Capacidad maxima del arreglo
@@ -20,6 +21,21 @@ public class ArregloDinamico <T> implements IArregloDinamico<T> {
 	 * Arreglo de elementos de tamaNo maximo
 	 */
 	private T elementos[ ];
+=======
+public class ArregloDinamico<T extends Comparable<T>> implements IArregloDinamico<T> {
+		/**
+		 * Capacidad maxima del arreglo
+		 */
+        private int tamanoMax;
+		/**
+		 * Numero de elementos presentes en el arreglo (de forma compacta desde la posicion 0)
+		 */
+        private int tamanoAct;
+        /**
+         * Arreglo de elementos de tamaNo maximo
+         */
+        private T elementos[ ];
+>>>>>>> 256d57d797b890e2ae0c63c890b7941d0bc088e5
 
 	/**
 	 * Construir un arreglo con la capacidad maxima inicial.
@@ -60,6 +76,7 @@ public class ArregloDinamico <T> implements IArregloDinamico<T> {
 	public T darElemento(int i) {
 		// TODO implementar
 
+<<<<<<< HEAD
 		return elementos[i];
 	}
 
@@ -72,6 +89,24 @@ public class ArregloDinamico <T> implements IArregloDinamico<T> {
 			{
 				buscado=elementos[i];
 			}
+=======
+		public T buscar(T dato) {
+			// TODO implementar
+			// Recomendacion: Usar el criterio de comparacion natural (metodo compareTo()) definido en Strings.
+			int i =0;
+			T elem =elementos[0];
+			while(i<elementos.length && elem !=null)
+			{
+				if(elem.compareTo(dato)==0)
+				{
+					return (T) elem;
+				}
+				i++;
+				elem=elementos[i];
+			}
+			
+			return elem;
+>>>>>>> 256d57d797b890e2ae0c63c890b7941d0bc088e5
 		}
 		return buscado;
 	}
@@ -91,7 +126,11 @@ public class ArregloDinamico <T> implements IArregloDinamico<T> {
 		for (int i = 0; i < elementos.length && pos!=-1; i++) {
 			if(i!=pos )
 			{
+<<<<<<< HEAD
 				if(i<pos)
+=======
+				if(elementos[i].compareTo(dato)==0)
+>>>>>>> 256d57d797b890e2ae0c63c890b7941d0bc088e5
 				{
 					copia[i]=elementos[i];
 				}
@@ -100,12 +139,34 @@ public class ArregloDinamico <T> implements IArregloDinamico<T> {
 					copia[i-1]=elementos[i];
 				}
 			}
+<<<<<<< HEAD
 		}
 		tamanoMax=tamanoMax-1;
 		elementos=(T[])new Object[tamanoMax];
 		elementos=copia;
 		return dato;
 	}
+=======
+			tamanoMax=tamanoMax-1;
+			elementos=(T[])new Object[tamanoMax];
+			copia = elementos;
+			return dato;
+		}
+		@Override
+		public void invertir() {
+			// TODO Auto-generated method stub
+			T[] copia = (T[]) new Object[tamanoMax];
+			copia = elementos;
+			elementos = (T[]) new Object[tamanoMax];
+			for(int i =0; i < tamanoAct; i ++)
+			{
+				elementos[i] = copia[tamanoAct - i -1];
+				
+			}
+			
+			
+		}
+>>>>>>> 256d57d797b890e2ae0c63c890b7941d0bc088e5
 
 	public void invertir()
 	{

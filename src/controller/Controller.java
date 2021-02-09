@@ -88,6 +88,15 @@ public class Controller {
 					break;	
 					
 				case 6: 
+					view.printMessage("--------- \nDar arreglo invertido\n---------");
+					dato = lector.next();
+					modelo.invertir();
+					lector.close();
+					fin = true;
+					break;	
+					
+					
+				case 7:
 					view.printMessage("--------- \n Hasta pronto !! \n---------"); 
 					lector.close();
 					fin = true;
