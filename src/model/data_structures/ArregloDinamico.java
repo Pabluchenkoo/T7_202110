@@ -102,10 +102,8 @@ public class ArregloDinamico <T> implements IArregloDinamico<T> {
 			}
 		}
 		tamanoMax=tamanoMax-1;
-		elementos=(T[])new Object[tamanoMax=tamanoMax-1];
-		for (int i = 0; i < copia.length; i++) {
-			elementos[i]=copia[i];
-		}
+		elementos=(T[])new Object[tamanoMax];
+		elementos=copia;
 		return dato;
 	}
 
