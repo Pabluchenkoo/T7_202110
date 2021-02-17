@@ -20,7 +20,7 @@ public class Controller {
 	public Controller ()
 	{
 		view = new View();
-		modelo = new Modelo();
+		modelo = new Modelo(10000);
 	}
 		
 	public void run() 
@@ -34,21 +34,31 @@ public class Controller {
 			view.printMenu();
 
 			int option = lector.nextInt();
-			switch(option){
+			switch(option)
+			{
 				case 1:
-					view.printMessage("--------- \nCrear Arreglo \nDar capacidad inicial del arreglo: ");
-				    int capacidad = lector.nextInt();
-				    modelo = new Modelo(capacidad); 
-				    view.printMessage("Arreglo Dinamico creado");
-				    view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");						
+					view.printMessage("--------- \nCargar Lista Enlazada: ");
+					try {
+						modelo.cargarListaEnlazada(); 
+					    view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");	
+						view.printMessage("datos cargados");
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} 					
 					break;
 
 				case 2:
-					view.printMessage("--------- \nDar cadena (simple) a ingresar: ");
-					dato = lector.next();
-					modelo.agregar(dato);
-					view.printMessage("Dato agregado");
-					view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");						
+					view.printMessage("--------- \nCargar Arreglo Dinamico: ");
+						
+					try {
+						modelo.cargarArregloDinamico();
+						view.printMessage("Arreglo Dinamico cargado");
+						view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} 		
 					break;
 
 				case 3:

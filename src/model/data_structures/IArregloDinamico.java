@@ -45,6 +45,4 @@ public interface IArregloDinamico<T extends Comparable<T>> {
 	
 	public void invertir();
 
-
-	public void invertir();
 }

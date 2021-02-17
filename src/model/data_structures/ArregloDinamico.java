@@ -1,6 +1,5 @@
 package model.data_structures;
 
-import sun.util.resources.cldr.ms.CalendarData_ms_BN;
 
 /**
  * 2019-01-23
@@ -9,12 +8,8 @@ import sun.util.resources.cldr.ms.CalendarData_ms_BN;
  * @author Fernando De la Rosa
  *
  */
-<<<<<<< HEAD
-<<<<<<< HEAD
-public class ArregloDinamico <T> implements IArregloDinamico<T> {
-=======
-public class ArregloDinamico <T extends Comparable<T>> implements ILista<T> {
->>>>>>> estudiante1
+public class ArregloDinamico <T extends Comparable<T>> implements ILista<T> 
+{
 	/**
 	 * Capacidad maxima del arreglo
 	 */
@@ -27,21 +22,6 @@ public class ArregloDinamico <T extends Comparable<T>> implements ILista<T> {
 	 * Arreglo de elementos de tamaNo maximo
 	 */
 	private T elementos[ ];
-=======
-public class ArregloDinamico<T extends Comparable<T>> implements IArregloDinamico<T> {
-		/**
-		 * Capacidad maxima del arreglo
-		 */
-        private int tamanoMax;
-		/**
-		 * Numero de elementos presentes en el arreglo (de forma compacta desde la posicion 0)
-		 */
-        private int tamanoAct;
-        /**
-         * Arreglo de elementos de tamaNo maximo
-         */
-        private T elementos[ ];
->>>>>>> 256d57d797b890e2ae0c63c890b7941d0bc088e5
 
 	/**
 	 * Construir un arreglo con la capacidad maxima inicial.
@@ -81,7 +61,6 @@ public class ArregloDinamico<T extends Comparable<T>> implements IArregloDinamic
 	public T darElemento(int i) {
 		// TODO implementar
 
-<<<<<<< HEAD
 		return elementos[i];
 	}
 
@@ -94,24 +73,6 @@ public class ArregloDinamico<T extends Comparable<T>> implements IArregloDinamic
 			{
 				buscado=elementos[i];
 			}
-=======
-		public T buscar(T dato) {
-			// TODO implementar
-			// Recomendacion: Usar el criterio de comparacion natural (metodo compareTo()) definido en Strings.
-			int i =0;
-			T elem =elementos[0];
-			while(i<elementos.length && elem !=null)
-			{
-				if(elem.compareTo(dato)==0)
-				{
-					return (T) elem;
-				}
-				i++;
-				elem=elementos[i];
-			}
-			
-			return elem;
->>>>>>> 256d57d797b890e2ae0c63c890b7941d0bc088e5
 		}
 		return buscado;
 	}
@@ -131,11 +92,7 @@ public class ArregloDinamico<T extends Comparable<T>> implements IArregloDinamic
 		for (int i = 0; i < elementos.length && pos!=-1; i++) {
 			if(i!=pos )
 			{
-<<<<<<< HEAD
 				if(i<pos)
-=======
-				if(elementos[i].compareTo(dato)==0)
->>>>>>> 256d57d797b890e2ae0c63c890b7941d0bc088e5
 				{
 					copia[i]=elementos[i];
 				}
@@ -144,34 +101,14 @@ public class ArregloDinamico<T extends Comparable<T>> implements IArregloDinamic
 					copia[i-1]=elementos[i];
 				}
 			}
-<<<<<<< HEAD
 		}
 		tamanoMax=tamanoMax-1;
-		elementos=(T[])new Object[tamanoMax];
-		elementos=copia;
+		elementos=(T[])new Object[tamanoMax=tamanoMax-1];
+		for (int i = 0; i < copia.length; i++) {
+			elementos[i]=copia[i];
+		}
 		return dato;
 	}
-=======
-			tamanoMax=tamanoMax-1;
-			elementos=(T[])new Object[tamanoMax];
-			copia = elementos;
-			return dato;
-		}
-		@Override
-		public void invertir() {
-			// TODO Auto-generated method stub
-			T[] copia = (T[]) new Object[tamanoMax];
-			copia = elementos;
-			elementos = (T[]) new Object[tamanoMax];
-			for(int i =0; i < tamanoAct; i ++)
-			{
-				elementos[i] = copia[tamanoAct - i -1];
-				
-			}
-			
-			
-		}
->>>>>>> 256d57d797b890e2ae0c63c890b7941d0bc088e5
 
 	public void invertir()
 	{
