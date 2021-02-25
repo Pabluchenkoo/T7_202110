@@ -49,12 +49,13 @@ public class Controller {
 					break;
 
 				case 2:
-					view.printMessage("--------- \nCargar Arreglo Dinamico: ");
+//					view.printMessage("--------- \nCargar Arreglo Dinamico: ");
 						
 					try {
+						view.printMessage("--------- \nCargando Arreglo Dinamico... ");
 						modelo.cargarArregloDinamico();
 						view.printMessage("Arreglo Dinamico cargado");
-						view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");
+//						view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -73,7 +74,7 @@ public class Controller {
 					{
 						view.printMessage("Dato NO encontrado");
 					}
-					view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");						
+//					view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");						
 					break;
 
 				case 4:

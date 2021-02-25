@@ -32,9 +32,9 @@ public class Modelo {
 	 */
 	public Modelo(int pCapacidad)
 	{
-		//datos = new ArregloDinamico<String>(capacidad);
+		datos = new ArregloDinamico<String>(pCapacidad);
 		videos = new ListaEncadenada<YouTubeVideo>();
-		//vidios = new ArregloDinamico<YouTubeVideo>(100000);
+		vidios = new ArregloDinamico<YouTubeVideo>(9999999);
 	}
 	
 	/**
@@ -52,7 +52,7 @@ public class Modelo {
 		{
 			CSVParser parser = new CSVParserBuilder().withSeparator(',').build();
 			
-			FileReader filereader = new FileReader("./data/videos-small.csv");
+			FileReader filereader = new FileReader("./data/videos-all.csv");
 		     
 			 CSVReader csvReader = ( new CSVReaderBuilder(filereader))
                      .withCSVParser(parser) 
@@ -61,7 +61,8 @@ public class Modelo {
 			 csvReader.readNext();         
 			 String [] data;
 			 int contador =0;
-		     while ((data = csvReader.readNext()) != null) {
+		     while ((data = csvReader.readNext()) != null) 
+		     {
 		       
 					
 					int k = 0; 
@@ -142,11 +143,12 @@ public class Modelo {
 	
 	public void cargarArregloDinamico() throws Exception
 	{
+		
 		try
 		{
 			CSVParser parser = new CSVParserBuilder().withSeparator(',').build();
 			
-			FileReader filereader = new FileReader("./data/videos-small.csv");
+			FileReader filereader = new FileReader("./data/videos-all.csv");
 		     
 			 CSVReader csvReader = ( new CSVReaderBuilder(filereader))
                      .withCSVParser(parser) 

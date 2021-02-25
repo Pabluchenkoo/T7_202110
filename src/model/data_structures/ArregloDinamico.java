@@ -29,7 +29,7 @@ public class ArregloDinamico <T extends Comparable<T>> implements ILista<T>
 	 */
 	public ArregloDinamico( int max )
 	{
-		elementos = (T[]) new Object[max];
+		elementos = (T[]) new Comparable[max];
 		tamanoMax = max;
 		tamanoAct = 0;
 	}
@@ -39,7 +39,7 @@ public class ArregloDinamico <T extends Comparable<T>> implements ILista<T>
 		{  // caso de arreglo lleno (aumentar tamaNo)
 			tamanoMax = 2 * tamanoMax;
 			T[]  copia = elementos;
-			elementos = (T[]) new Object[tamanoMax];
+			elementos = (T[]) new Comparable[tamanoMax];
 			for ( int i = 0; i < tamanoAct; i++)
 			{
 				elementos[i] = copia[i];
@@ -67,20 +67,35 @@ public class ArregloDinamico <T extends Comparable<T>> implements ILista<T>
 	public T buscar(T dato) {
 		// TODO implementar
 		// Recomendacion: Usar el criterio de comparacion natural (metodo compareTo()) definido en Strings.
-		T buscado = null;
-		for (int i = 0; i < elementos.length; i++) {
-			if(elementos[i].equals(dato))
+
+		int i =0;
+		T elem =elementos[0];
+		while(i<elementos.length && elem !=null)
+		{
+			if(elem.compareTo(dato)==0)
 			{
-				buscado=elementos[i];
+				return (T) elem;
 			}
+			i++;
+			elem=elementos[i];
 		}
-		return buscado;
+		
+		return elem;
+		
+//		T buscado = null;
+//		for (int i = 0; i < elementos.length; i++) {
+//			if(elementos[i].equals(dato))
+//			{
+//				buscado=elementos[i];
+//			}
+//		}
+//		return buscado;
 	}
 
 	public T eliminar(T dato) {
 		// TODO implementar
 		// Recomendacion: Usar el criterio de comparacion natural (metodo compareTo()) definido en Strings.
-		T[] copia = (T[])new Object[tamanoMax-1];
+		T[] copia = (T[])new Comparable[tamanoMax-1];
 		int pos=-1;
 		for (int i = 0; i < elementos.length; i++) 
 		{
@@ -112,9 +127,9 @@ public class ArregloDinamico <T extends Comparable<T>> implements ILista<T>
 
 	public void invertir()
 	{
-		T[] copia = (T[]) new Object[tamanoMax];
+		T[] copia = (T[]) new Comparable[tamanoMax];
 		copia=elementos;
-		elementos=(T[]) new Object[tamanoMax];
+		elementos=(T[]) new Comparable[tamanoMax];
 		for (int i = 0; i < tamanoAct; i++) 
 		{
 			elementos[i]=copia[tamanoAct-i-1];
