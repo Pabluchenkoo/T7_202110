@@ -3,6 +3,7 @@ import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 
 import java.io.FileReader;
+import java.util.Comparator;
 
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
@@ -11,6 +12,7 @@ import com.opencsv.CSVReaderBuilder;
 
 public class YouTubeVideo implements Comparable<YouTubeVideo> 
 {
+	
 
 	private String videoID;
 	
@@ -45,8 +47,40 @@ public class YouTubeVideo implements Comparable<YouTubeVideo>
 	private String Country;
 	
 	
-	
-	
+	public int compareToID(YouTubeVideo otro)
+	{
+		int comparacion= Integer.parseInt(this.getVideoID())-Integer.parseInt(otro.getVideoID());
+		if(comparacion==0)
+		{
+			return 0;
+		}
+		else if (comparacion>0)
+		{
+			return 1;
+		}
+		else
+			return -1;
+	}
+	public static class ComparadorXLikes implements Comparator<YouTubeVideo>
+	{
+
+		@Override
+		public int compare(YouTubeVideo o1, YouTubeVideo o2) {
+			// TODO Auto-generated method stub
+			int comparaciao = Integer.parseInt(o1.getLikes())-Integer.parseInt(o2.getLikes());
+			if (comparaciao>0)
+			{
+				return 1;
+			}
+			else if (comparaciao<0)
+			{
+				return -1;
+			}
+			else
+				return 0;
+		}
+		
+	}
 	public YouTubeVideo(String videoID, String trendingDate, String channelTitle, String categoryID, String publishTime,
 			String tags, String views, String likes, String dislikes, String commentCount, String link, String commentsDisabled,
 			String ratingsDisabled, String errorRemoved, String description, String country) {
