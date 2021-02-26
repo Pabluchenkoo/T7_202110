@@ -27,6 +27,9 @@ public class ListaEncadenada <T extends Comparable<T>> implements ILista<T>
 			}
 			auxiliar.cambiarSiguiente(last);
 		}
+		else
+			primero=last;
+		tamanio++;
 
 
 	}
@@ -47,6 +50,10 @@ public class ListaEncadenada <T extends Comparable<T>> implements ILista<T>
 			auxiliar.cambiarSiguiente(nuevo);
 			
 		}
+		else
+			primero=nuevo;
+		tamanio++;
+			
 		
 		
 	}
@@ -78,6 +85,7 @@ public class ListaEncadenada <T extends Comparable<T>> implements ILista<T>
 			}
 			NodoLista<T> eliminar=auxiliar.darSiguiente();
 			auxiliar.cambiarSiguiente(null);
+			tamanio--;
 			return eliminar.darInformation();
 		}
 		else
@@ -97,6 +105,7 @@ public class ListaEncadenada <T extends Comparable<T>> implements ILista<T>
 			}
 			T eliminar = (T) auxiliar.darSiguiente().darInformation();
 			auxiliar.cambiarSiguiente(auxiliar.darSiguiente().darSiguiente());
+			tamanio--;
 			return eliminar;
 		}
 		else
@@ -136,7 +145,7 @@ public class ListaEncadenada <T extends Comparable<T>> implements ILista<T>
 		if(primero!=null)
 		{
 			NodoLista<T> auxiliar=primero;
-			for (int i = 0; i <= pos; i++) 
+			for (int i = 1; i <= pos; i++) 
 			{
 				auxiliar=auxiliar.darSiguiente();
 			}
@@ -216,6 +225,17 @@ public class ListaEncadenada <T extends Comparable<T>> implements ILista<T>
 		}
 		auxiliar1.cambiarInformation(element);
 		
+	}
+
+	@Override
+	public ILista<T> subList(int principio, int fin) {
+		int tamanio=principio-fin;
+		ListaEncadenada listaDevolver = new ListaEncadenada<T>();
+		for (int i = 0; i <=tamanio ; i++) 
+		{
+			listaDevolver.addLast(this.getElement(i+principio));
+		}
+		return listaDevolver;
 	}
 
 }

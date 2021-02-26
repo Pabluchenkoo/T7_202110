@@ -283,4 +283,15 @@ public class ArregloDinamico <T extends Comparable<T>> implements ILista<T>
 		// TODO Auto-generated method stub
 		elementos[pos-1]=element;
 	}
+	@Override
+	public ILista<T> subList(int principio, int fin) 
+	{
+		int tamanio=fin-principio;
+		ArregloDinamico<T> arregloDevolver = new ArregloDinamico<T>(tamanio);
+		for (int i=principio; i <= fin; i++) 
+		{
+			arregloDevolver.addLast(elementos[i]);
+		}
+		return arregloDevolver;
+	}
 }
