@@ -1,8 +1,11 @@
 package controller;
 
+import java.util.Comparator;
 import java.util.Scanner;
 
 import model.logic.Modelo;
+import model.logic.YouTubeVideo;
+import utils.Ordenamiento;
 import view.View;
 
 public class Controller {
@@ -13,6 +16,8 @@ public class Controller {
 	/* Instancia de la Vista*/
 	private View view;
 	
+	Comparator<YouTubeVideo> comparadorXLikes = new YouTubeVideo.ComparadorXLikes();
+	
 	/**
 	 * Crear la vista y el modelo del proyecto
 	 * @param capacidad tamaNo inicial del arreglo
@@ -21,6 +26,7 @@ public class Controller {
 	{
 		view = new View();
 		modelo = new Modelo(10000);
+		
 	}
 		
 	public void run() 
@@ -29,6 +35,7 @@ public class Controller {
 		boolean fin = false;
 		String dato = "";
 		String respuesta = "";
+		int answer=0;
 
 		while( !fin ){
 			view.printMenu();
@@ -37,7 +44,7 @@ public class Controller {
 			switch(option)
 			{
 				case 1:
-					view.printMessage("--------- \nCargar Lista Enlazada: ");
+					view.printMessage("--------- \nCargando Lista Enlazada: ");
 					try {
 						modelo.cargarListaEnlazada(); 
 					    view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");	
@@ -54,6 +61,7 @@ public class Controller {
 					try {
 						view.printMessage("--------- \nCargando Arreglo Dinamico... ");
 						modelo.cargarArregloDinamico();
+						view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");
 						view.printMessage("Arreglo Dinamico cargado");
 //						view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");
 					} catch (Exception e1) {
@@ -103,11 +111,61 @@ public class Controller {
 					dato = lector.next();
 					modelo.invertir();
 					lector.close();
-					fin = true;
 					break;	
 					
-					
 				case 7:
+					Scanner myInput = new Scanner( System.in );
+					view.printMessage("--------- \nDar SubLista:\n---------");
+					System.out.print( "Enter an integer: " );
+					int a = myInput.nextInt();
+//					modelo.muestraDadaListaEncadenada(a);
+					modelo.muestraDadaArregloDinamico(a);
+//					System.out.println(answer);
+//					view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");						
+					break;
+				
+				case 8: 
+					view.printMessage("--------- \nAplicar Selección :\n---------");
+					dato = lector.next();
+					
+					modelo.ordenarPorSeleccion(comparadorXLikes , true);
+					lector.close();
+
+					break;
+					
+				case 9: 
+					view.printMessage("--------- \nAplicar Inserción :\n---------");
+					dato = lector.next();
+					
+					modelo.ordenarPorInsercion(comparadorXLikes , true);
+					lector.close();
+
+					break;
+				case 10: 
+					view.printMessage("--------- \nAplicar ShellSort :\n---------");
+					dato = lector.next();
+					
+					modelo.ordenarPorShellSort(comparadorXLikes , true);
+					lector.close();
+
+					break;
+				case 11: 
+					view.printMessage("--------- \nAplicar MergeSort :\n---------");
+					dato = lector.next();
+					
+					modelo.ordenarPorMergeSort(comparadorXLikes , true);
+					lector.close();
+
+					break;
+				case 12: 
+					view.printMessage("--------- \nAplicar QuickSort :\n---------");
+					dato = lector.next();
+					
+					modelo.ordenarPorQuickSort(comparadorXLikes , true);
+					lector.close();
+
+					break;
+				case 13:
 					view.printMessage("--------- \n Hasta pronto !! \n---------"); 
 					lector.close();
 					fin = true;

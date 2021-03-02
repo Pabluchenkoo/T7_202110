@@ -2,7 +2,7 @@ package model.data_structures;
 
 public class NodoLista <T extends Comparable <T>>
 {
-	private NodoLista siguiente;
+	private NodoLista<T> siguiente;
 	
 	private T information;
 	
@@ -11,11 +11,11 @@ public class NodoLista <T extends Comparable <T>>
 		information=info;
 		siguiente=null;
 	}
-	public void cambiarSiguiente(NodoLista pSiguiente)
+	public void cambiarSiguiente(NodoLista<T> pSiguiente)
 	{
 		siguiente=pSiguiente;
 	}
-	public NodoLista darSiguiente()
+	public NodoLista<T> darSiguiente()
 	{
 		return siguiente;
 	}

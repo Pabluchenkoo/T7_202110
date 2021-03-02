@@ -1,14 +1,6 @@
 package model.logic;
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
 
-import java.io.FileReader;
 import java.util.Comparator;
-
-import com.opencsv.CSVParser;
-import com.opencsv.CSVParserBuilder;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
 
 public class YouTubeVideo implements Comparable<YouTubeVideo> 
 {

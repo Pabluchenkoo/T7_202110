@@ -1,9 +1,13 @@
 package model.data_structures;
 
+import utils.Ordenamiento;
+
 public class ListaEncadenada <T extends Comparable<T>> implements ILista<T>
 {
 	private int tamanio;
 	private NodoLista<T> primero;
+	
+	private Ordenamiento<T> ordenamiento;
 	
 	public void addFirst(T element) 
 	{
@@ -230,12 +234,13 @@ public class ListaEncadenada <T extends Comparable<T>> implements ILista<T>
 	@Override
 	public ILista<T> subList(int principio, int fin) {
 		int tamanio=principio-fin;
-		ListaEncadenada listaDevolver = new ListaEncadenada<T>();
+		ListaEncadenada<T> listaDevolver = new ListaEncadenada<T>();
 		for (int i = 0; i <=tamanio ; i++) 
 		{
 			listaDevolver.addLast(this.getElement(i+principio));
 		}
 		return listaDevolver;
 	}
-
+	
+	
 }

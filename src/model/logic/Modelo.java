@@ -1,6 +1,7 @@
 package model.logic;
 
 import java.io.FileReader;
+import java.util.Comparator;
 
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
@@ -8,8 +9,9 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 
 import model.data_structures.ArregloDinamico;
-import model.data_structures.IArregloDinamico;
+import model.data_structures.ILista;
 import model.data_structures.ListaEncadenada;
+import utils.Ordenamiento;
 
 /**
  * Definicion del modelo del mundo
@@ -25,6 +27,9 @@ public class Modelo {
 	
 	private ArregloDinamico<YouTubeVideo> vidios;
 	
+	private ILista<YouTubeVideo> subLista;
+	
+	private Ordenamiento<YouTubeVideo> ordenamiento;
 	
 	/**
 	 * Constructor del modelo del mundo con capacidad dada
@@ -36,6 +41,8 @@ public class Modelo {
 		videos = new ListaEncadenada<YouTubeVideo>();
 		vidios = new ArregloDinamico<YouTubeVideo>(9999999);
 	}
+	
+	
 	
 	/**
 	 * Servicio de consulta de numero de elementos presentes en el modelo 
@@ -127,9 +134,7 @@ public class Modelo {
 					videos.addLast(video);
 					contador++;
 					
-					
 					System.out.println(contador);
-					
 		    	 
 		     }
 		     System.out.println("Numero de datos leidos: " + contador);
@@ -223,13 +228,9 @@ public class Modelo {
 					vidios.addLast(video);
 					contador++;
 					
-					if(contador == 0)
-					{
-						System.out.println( contador);
-					}
 		    	 
 		     }
-		     
+		     System.out.println("Numero de datos leidos: " + contador);
 		     
 		
 		}     
@@ -238,6 +239,42 @@ public class Modelo {
 				e.printStackTrace();
 			}
 	}
+	
+	/**
+	 * Requerimiento de agregar dato
+	 * @param dato
+	 */
+	public ILista<YouTubeVideo> muestraDadaListaEncadenada(int pNumero)
+	{
+		subLista = videos.subList( 1 , pNumero);
+		
+		if(subLista.size()> videos.size())
+		{
+			subLista = videos;
+		}
+		
+//		System.out.println(subLista.size());
+		
+		return subLista;
+		
+	}
+	public ILista<YouTubeVideo> muestraDadaArregloDinamico(int pNumero)
+	{
+		subLista = vidios.subList( 1 , pNumero);
+		
+		if(subLista.size()> vidios.size())
+		{
+			subLista = vidios;
+		}
+		
+//		System.out.println(subLista.size());
+		
+		return subLista;
+		
+	}
+	
+	
+	
 	/**
 	 * Requerimiento de agregar dato
 	 * @param dato
@@ -270,5 +307,103 @@ public class Modelo {
 	public void invertir()
 	{
 		 datos.invertir();
+	}
+	
+	/**
+	 * Ejecuta el algoritmo
+	 * 
+	 */
+	public void ordenarPorSeleccion(Comparator<YouTubeVideo> criterio, boolean pAscendente)
+	{	
+		long start_time = System.currentTimeMillis(); // # tiempo de referencia inicial (mseg)
+		
+		//Instrucción o funcion a cronometrar
+		
+		Comparator<YouTubeVideo> comparadorXLikes = new YouTubeVideo.ComparadorXLikes();
+		Ordenamiento<YouTubeVideo> algsOrdenamientoVideos = new Ordenamiento<YouTubeVideo>();
+		algsOrdenamientoVideos.ordenarSeleccion(subLista, comparadorXLikes, true);
+		
+		long stop_time = System.currentTimeMillis(); //# tiempo de referencia final (mseg)
+		long elapsed_time = stop_time - start_time;
+		
+		System.out.println(elapsed_time);
+	
+	}
+	/**
+	 * Ejecuta el algoritmo
+	 * 
+	 */
+	public void ordenarPorInsercion(Comparator<YouTubeVideo> criterio, boolean pAscendente)
+	{
+		long start_time = System.currentTimeMillis(); // # tiempo de referencia inicial (mseg)
+		
+		//Instrucción o funcion a cronometrar
+		
+		Comparator<YouTubeVideo> comparadorXLikes = new YouTubeVideo.ComparadorXLikes();
+		Ordenamiento<YouTubeVideo> algsOrdenamientoVideos = new Ordenamiento<YouTubeVideo>();
+		algsOrdenamientoVideos.ordenarInsercion(subLista, comparadorXLikes, true);
+		
+		long stop_time = System.currentTimeMillis(); //# tiempo de referencia final (mseg)
+		long elapsed_time = stop_time - start_time;
+		
+		System.out.println(elapsed_time);
+	}
+	/**
+	 * Ejecuta el algoritmo
+	 * 
+	 */
+	public void ordenarPorShellSort(Comparator<YouTubeVideo> criterio, boolean pAscendente)
+	{
+		long start_time = System.currentTimeMillis(); // # tiempo de referencia inicial (mseg)
+		
+		//Instrucción o funcion a cronometrar
+		Comparator<YouTubeVideo> comparadorXLikes = new YouTubeVideo.ComparadorXLikes();
+		Ordenamiento<YouTubeVideo> algsOrdenamientoVideos = new Ordenamiento<YouTubeVideo>();
+		algsOrdenamientoVideos.ordenarShellSort(subLista, comparadorXLikes, true);
+		
+		long stop_time = System.currentTimeMillis(); //# tiempo de referencia final (mseg)
+		long elapsed_time = stop_time - start_time;
+		
+		System.out.println(elapsed_time);
+	}
+	/**
+	 * Ejecuta el algoritmo
+	 * 
+	 */
+	public void ordenarPorMergeSort(Comparator<YouTubeVideo> criterio, boolean pAscendente)
+	{
+		
+		long start_time = System.currentTimeMillis(); // # tiempo de referencia inicial (mseg)
+		
+		//Instrucción o funcion a cronometrar
+		
+		Comparator<YouTubeVideo> comparadorXLikes = new YouTubeVideo.ComparadorXLikes();
+		Ordenamiento<YouTubeVideo> algsOrdenamientoVideos = new Ordenamiento<YouTubeVideo>();
+		algsOrdenamientoVideos.ordenarMergeSort(subLista, comparadorXLikes, true);
+		
+		long stop_time = System.currentTimeMillis(); //# tiempo de referencia final (mseg)
+		long elapsed_time = stop_time - start_time;
+		
+		System.out.println(elapsed_time);
+	}
+	/**
+	 * Ejecuta el algoritmo
+	 * 
+	 */
+	public void ordenarPorQuickSort(Comparator<YouTubeVideo> criterio, boolean pAscendente)
+	{
+		
+		
+		
+		long start_time = System.currentTimeMillis(); // # tiempo de referencia inicial (mseg)
+		
+		//Instrucción o funcion a cronometrar
+		Comparator<YouTubeVideo> comparadorXLikes = new YouTubeVideo.ComparadorXLikes();
+		Ordenamiento<YouTubeVideo> algsOrdenamientoVideos = new Ordenamiento<YouTubeVideo>();
+		algsOrdenamientoVideos.ordenarQuickSort(subLista, comparadorXLikes, true);
+		
+		long stop_time = System.currentTimeMillis(); //# tiempo de referencia final (mseg)
+		long elapsed_time = stop_time - start_time;
+		System.out.println(elapsed_time);
 	}
 }
