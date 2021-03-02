@@ -26,7 +26,20 @@ public class View
 			
 			System.out.println("6. Invertir Arreglo");
 			
-			System.out.println("7. Exit");
+			System.out.println("7. Dar SubLista");
+			
+			System.out.println("8. Odenar Selección");
+			
+			System.out.println("9. Odenar Inserción");
+			
+			System.out.println("10. Ordenar ShellSort");
+			
+			System.out.println("11. Ordenar MergeSort");
+			
+			System.out.println("12. Ordenar QuickSort");
+			
+			System.out.println("13. Exit");
+			
 			
 			System.out.println("Dar el numero de opcion a resolver, luego oprimir tecla Return: (e.g., 1):");
 		}
