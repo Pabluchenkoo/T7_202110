@@ -11,7 +11,7 @@ public class ComparadorXViews implements Comparator<YouTubeVideo>
 			public int compare(YouTubeVideo o1, YouTubeVideo o2) 
 			{
 				// TODO Auto-generated method stub
-				int comparaciao = Integer.parseInt(o1.getLikes())-Integer.parseInt(o2.getLikes());
+				int comparaciao = Integer.parseInt(o1.getViews())-Integer.parseInt(o2.getViews());
 				if (comparaciao>0)
 				{
 					return 1;
