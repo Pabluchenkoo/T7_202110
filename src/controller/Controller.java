@@ -37,6 +37,8 @@ public class Controller {
 		Scanner lector = new Scanner(System.in);
 		boolean fin = false;
 		String dato = "";
+		String dato1="";
+//		int dato2=0;
 		String respuesta = "";
 //		int answer=0;
 
@@ -47,7 +49,7 @@ public class Controller {
 			switch(option)
 			{
 				case 1:
-					view.printMessage("--------- \nCargando Lista Enlazada: ");
+					view.printMessage("--------- \nCargando Categorias ");
 					try {
 						modelo.cargarCategorias(); 
 //					    view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");	
@@ -74,18 +76,19 @@ public class Controller {
 					break;
 
 				case 3:
-					view.printMessage("--------- \nDar cadena (simple) a buscar: ");
+					view.printMessage("--------- \nDar categoria: ");
 					dato = lector.next();
-					respuesta = modelo.buscar(dato);
-					if ( respuesta != null)
-					{
-						view.printMessage("Dato encontrado: "+ respuesta);
-					}
-					else
-					{
-						view.printMessage("Dato NO encontrado");
-					}
-//					view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");						
+					view.printMessage("--------- \nDar pais: ");
+					dato1 = lector.next();
+					
+					Scanner myInput = new Scanner( System.in );
+//					view.printMessage("--------- \nDar numero de datos:\n---------");
+					
+					System.out.print( "Enter an integer: " );
+					int a = myInput.nextInt();
+
+					modelo.videosConMasViews(dato, dato1, a);
+					
 					break;
 
 				case 4:
@@ -117,12 +120,12 @@ public class Controller {
 					break;	
 					
 				case 7:
-					Scanner myInput = new Scanner( System.in );
+//					Scanner myInput = new Scanner( System.in );
 					view.printMessage("--------- \nDar SubLista:\n---------");
 					System.out.print( "Enter an integer: " );
-					int a = myInput.nextInt();
+//					int a1 = myInput.nextInt();
 //					modelo.muestraDadaListaEncadenada(a);
-					modelo.muestraDadaArregloDinamico(a);
+//					modelo.muestraDadaArregloDinamico(a1);
 //					System.out.println(answer);
 //					view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");						
 					break;
