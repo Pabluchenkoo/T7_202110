@@ -14,7 +14,11 @@ import org.apache.commons.csv.CSVRecord;
 import model.data_structures.ArregloDinamico;
 import model.data_structures.ILista;
 import model.data_structures.ListaEncadenada;
+<<<<<<< HEAD
 import model.logic.YouTubeVideo.ComparadorXLikes;
+=======
+import utils.ComparadorXViews;
+>>>>>>> 5d05dcb30a47dbcc6b0e9f5ac061019eaef5276c
 import utils.Ordenamiento;
 
 /**
@@ -36,6 +40,8 @@ public class Modelo {
 	private ILista<YouTubeVideo> subLista;
 	
 	private ArrayList<Categoria> categorias;
+	
+//	private Ordenamiento<YouTubeVideo> ordenamiento;
 	
 //	private Ordenamiento<YouTubeVideo> ordenamiento;
 	
@@ -314,7 +320,7 @@ public class Modelo {
 			 {
 				 System.out.println(categorias.get(i).getiD() + "-" + categorias.get(i).getName());
 			 }
-			
+
 			 
 		     System.out.println("Numero de datos leidos: " + contador);
 		     
@@ -325,6 +331,76 @@ public class Modelo {
 				e.printStackTrace();
 			}
 	}
+	
+	
+	public String esCategoria(String pNombreCategoria)
+	{
+		String respuesta = "";
+		for(int i = 0; i < categorias.size(); i++)
+		{
+			String nombre = categorias.get(i).getName();
+			if(nombre.equals(pNombreCategoria))
+			{
+				String iD = categorias.get(i).getiD();
+				respuesta= iD;
+			}
+
+		}
+		return respuesta;
+	}
+	
+	//	public void darViews()
+	//	{
+	//		
+	//	}
+	
+	
+	/*
+	 * REQ. 1 
+	 * n videos con mas views que son tendencia en un determinado pais, dada una pCategoria
+	 * especifica
+	 */
+	public void videosConMasViews(String pNombreCategoria, String pPais, int pNumero)
+	{
+		
+
+		String pCategoria = esCategoria(pNombreCategoria);
+		
+		ArregloDinamico<YouTubeVideo> videosPorCategoria = new ArregloDinamico<>(100); 
+		
+		for (int i =0; i < vidios.darTamano(); i++)
+		{
+			String categoria = vidios.darElemento(i).getCategoryID();
+			
+			String pais = vidios.darElemento(i).getCountry();
+			
+			YouTubeVideo video = vidios.getElement(i);
+			
+			if (categoria.equals(pCategoria) && pais.equals(pPais))
+			{		
+				videosPorCategoria.addLast(video);
+				
+//				
+			}
+		}
+		ordenarPorQuickSort((Comparator<YouTubeVideo>) videosPorCategoria, false);
+		
+		for(int i = 0; i < pNumero;i++)
+		{
+			YouTubeVideo videoCategory = videosPorCategoria.getElement(i);
+			System.out.println(videoCategory.getTrendingDate()+videoCategory.getTitle()+videoCategory.getChannelTitle()
+			+videoCategory.getPublishTime()+videoCategory.getViews()+videoCategory.getLikes()
+			+videoCategory.getDislikes());
+			
+	
+		}
+		
+		
+	}
+	
+	
+	
+	
 	
 	/**
 	 * Requerimiento de agregar dato
@@ -405,9 +481,9 @@ public class Modelo {
 		
 		//Instrucción o funcion a cronometrar
 		
-		Comparator<YouTubeVideo> comparadorXLikes = new YouTubeVideo.ComparadorXLikes();
+		Comparator<YouTubeVideo> comparadorXViews = new ComparadorXViews();
 		Ordenamiento<YouTubeVideo> algsOrdenamientoVideos = new Ordenamiento<YouTubeVideo>();
-		algsOrdenamientoVideos.ordenarSeleccion(subLista, comparadorXLikes, true);
+		algsOrdenamientoVideos.ordenarSeleccion(subLista, comparadorXViews, true);
 		
 		long stop_time = System.currentTimeMillis(); //# tiempo de referencia final (mseg)
 		long elapsed_time = stop_time - start_time;
@@ -484,9 +560,9 @@ public class Modelo {
 		long start_time = System.currentTimeMillis(); // # tiempo de referencia inicial (mseg)
 		
 		//Instrucción o funcion a cronometrar
-		Comparator<YouTubeVideo> comparadorXLikes = new YouTubeVideo.ComparadorXLikes();
+		Comparator<YouTubeVideo> comparadorXViews = new ComparadorXViews();
 		Ordenamiento<YouTubeVideo> algsOrdenamientoVideos = new Ordenamiento<YouTubeVideo>();
-		algsOrdenamientoVideos.ordenarQuickSort(subLista, comparadorXLikes, true);
+		algsOrdenamientoVideos.ordenarSeleccion(subLista, comparadorXViews, true);
 		
 		long stop_time = System.currentTimeMillis(); //# tiempo de referencia final (mseg)
 		long elapsed_time = stop_time - start_time;
