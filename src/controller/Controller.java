@@ -25,7 +25,10 @@ public class Controller {
 	public Controller ()
 	{
 		view = new View();
-		modelo = new Modelo(10000);
+		
+		modelo = new Modelo(999999999);
+		
+		
 		
 	}
 		
@@ -35,7 +38,7 @@ public class Controller {
 		boolean fin = false;
 		String dato = "";
 		String respuesta = "";
-		int answer=0;
+//		int answer=0;
 
 		while( !fin ){
 			view.printMenu();
@@ -46,9 +49,9 @@ public class Controller {
 				case 1:
 					view.printMessage("--------- \nCargando Lista Enlazada: ");
 					try {
-						modelo.cargarListaEnlazada(); 
-					    view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");	
-						view.printMessage("datos cargados");
+						modelo.cargarCategorias(); 
+//					    view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");	
+//						view.printMessage("datos cargados");
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -61,8 +64,8 @@ public class Controller {
 					try {
 						view.printMessage("--------- \nCargando Arreglo Dinamico... ");
 						modelo.cargarArregloDinamico();
-						view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");
-						view.printMessage("Arreglo Dinamico cargado");
+//						view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");
+//						view.printMessage("Arreglo Dinamico cargado");
 //						view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
