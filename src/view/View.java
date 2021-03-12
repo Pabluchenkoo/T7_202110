@@ -14,11 +14,11 @@ public class View
 	    
 		public void printMenu()
 		{
-			System.out.println("1. Cargar Lista Enlazada");
+			System.out.println("1. Cargar Categorias");
 			
 			System.out.println("2. Cargar ArregloDinamico");
 			
-			System.out.println("3. Buscar String");
+			System.out.println("3. Req 1");
 			
 			System.out.println("4. Eliminar String");
 			
