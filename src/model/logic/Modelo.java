@@ -14,7 +14,11 @@ import org.apache.commons.csv.CSVRecord;
 import model.data_structures.ArregloDinamico;
 import model.data_structures.ILista;
 import model.data_structures.ListaEncadenada;
+<<<<<<< HEAD
+import model.logic.YouTubeVideo.ComparadorXLikes;
+=======
 import utils.ComparadorXViews;
+>>>>>>> 5d05dcb30a47dbcc6b0e9f5ac061019eaef5276c
 import utils.Ordenamiento;
 
 /**
@@ -564,4 +568,50 @@ public class Modelo {
 		long elapsed_time = stop_time - start_time;
 		System.out.println(elapsed_time);
 	}
+	public boolean buscarTag(YouTubeVideo video, String tag)
+	{
+		String[] tags = video.getTags().split("|");
+		boolean cent = false;
+		for (int i = 0; i < tags.length && !cent; i++) 
+		{
+			if (tags[i].equals(tag))
+			{
+				cent = true;
+			}
+		}
+		return cent;
+	}
+	public ILista videosDelPaisTag(String pais, String tag)
+	{
+		ListaEncadenada<YouTubeVideo> videosPaisTag = new ListaEncadenada<>();
+		for (int i = 1; i <= vidios.size() ; i++) 
+		{
+			if (vidios.getElement(i).getCountry().equals(pais))
+			{
+				if (buscarTag(vidios.getElement(i), tag))
+				{
+					videosPaisTag.addLast(vidios.getElement(i));
+				}
+			}
+		}
+		return videosPaisTag;		
+	}
+	public ILista videosConMasLikes(String pais, int numero, String tags)
+	{
+		ListaEncadenada<YouTubeVideo> videosDevolver = (ListaEncadenada<YouTubeVideo>) videosDelPaisTag(pais, tags);
+		Ordenamiento ordenar = new Ordenamiento<>();
+		ComparadorXLikes comparador = new ComparadorXLikes();
+		ordenar.ordenarShellSort(videosDevolver, comparador, false);
+		ListaEncadenada<YouTubeVideo> videosDeTodo = (ListaEncadenada<YouTubeVideo>) videosDevolver.subList(0, numero);
+		for (int i = 1; i <= numero ;i++) 
+		{
+			YouTubeVideo videox = videosDeTodo.getElement(i);
+			System.out.println("Titulo: " + videox.getTitle() + ", Canal: " + videox.getChannelTitle() 
+								+ " Se publico en: " + videox.getPublishTime() + ", Tiene estas views: " +
+								videox.getViews() + ", likes: " + videox.getLikes() + ", dislikes: "
+								 + videox.getDislikes() + ", tags: " + videox.getTags());
+		}
+		return datos;
+	}
+	
 }

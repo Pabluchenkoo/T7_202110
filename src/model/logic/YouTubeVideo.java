@@ -1,6 +1,11 @@
 package model.logic;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Comparator;
+import java.util.Date;
+import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
 
 public class YouTubeVideo implements Comparable<YouTubeVideo> 
 {
@@ -293,6 +298,21 @@ public class YouTubeVideo implements Comparable<YouTubeVideo>
 			return -1;
 		}
 		
+		
+	}
+	public  int diasEnTendencia() throws ParseException
+	{
+		String[] x = publishTime.split("T");
+		String fechaPublish = x[0];
+		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+		Date fechaPublicacion = formato.parse(fechaPublish);
+		Date fechaTrending = formato.parse(trendingDate);
+		String fechaP = fechaPublicacion +"";
+		String fechaT = fechaTrending + "";
+		LocalDate fecha1 = LocalDate.parse(fechaP);
+		LocalDate fecha2= LocalDate.parse(fechaT);
+		int diasTendencia = (int) ChronoUnit.DAYS.between(fecha1, fecha2);
+		return diasTendencia;
 		
 	}
 
