@@ -1,14 +1,6 @@
 package model.logic;
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
 
-import java.io.FileReader;
 import java.util.Comparator;
-
-import com.opencsv.CSVParser;
-import com.opencsv.CSVParserBuilder;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
 
 public class YouTubeVideo implements Comparable<YouTubeVideo> 
 {
@@ -17,6 +9,8 @@ public class YouTubeVideo implements Comparable<YouTubeVideo>
 	private String videoID;
 	
 	private String trendingDate;
+	
+	private String title;
 	
 	private String channelTitle;
 	
@@ -44,7 +38,7 @@ public class YouTubeVideo implements Comparable<YouTubeVideo>
 	
 	private String description;
 	
-	private String Country;
+	private String country;
 	
 	
 	public int compareToID(YouTubeVideo otro)
@@ -81,12 +75,13 @@ public class YouTubeVideo implements Comparable<YouTubeVideo>
 		}
 		
 	}
-	public YouTubeVideo(String videoID, String trendingDate, String channelTitle, String categoryID, String publishTime,
+	public YouTubeVideo(String videoID, String trendingDate,String title, String channelTitle, String categoryID, String publishTime,
 			String tags, String views, String likes, String dislikes, String commentCount, String link, String commentsDisabled,
 			String ratingsDisabled, String errorRemoved, String description, String country) {
 		super();
 		this.videoID = videoID;
 		this.trendingDate = trendingDate;
+		this.title = trendingDate;
 		this.channelTitle = channelTitle;
 		this.categoryID = categoryID;
 		this.publishTime = publishTime;
@@ -100,7 +95,7 @@ public class YouTubeVideo implements Comparable<YouTubeVideo>
 		this.ratingsDisabled = ratingsDisabled;
 		this.errorRemoved = errorRemoved;
 		this.description = description;
-		Country = country;
+		country = country;
 	}
 	
 	
@@ -121,6 +116,14 @@ public class YouTubeVideo implements Comparable<YouTubeVideo>
 
 	public void setTrendingDate(String trendingDate) {
 		this.trendingDate = trendingDate;
+	}
+	public String getTitle() {
+		return title;
+	}
+
+
+	public void setTitle(String pTitle) {
+		this.title = pTitle;
 	}
 
 
@@ -241,14 +244,14 @@ public class YouTubeVideo implements Comparable<YouTubeVideo>
 
 
 	public String getCountry() {
-		return Country;
+		return country;
 	}
 
 
 
 
 	public void setCountry(String country) {
-		Country = country;
+		country = country;
 	}
 
 	@Override

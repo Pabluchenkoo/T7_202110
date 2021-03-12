@@ -1,15 +1,20 @@
 package model.logic;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Comparator;
 
-import com.opencsv.CSVParser;
-import com.opencsv.CSVParserBuilder;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
+
+
 
 import model.data_structures.ArregloDinamico;
-import model.data_structures.IArregloDinamico;
+import model.data_structures.ILista;
 import model.data_structures.ListaEncadenada;
+import utils.Ordenamiento;
 
 /**
  * Definicion del modelo del mundo
@@ -25,6 +30,13 @@ public class Modelo {
 	
 	private ArregloDinamico<YouTubeVideo> vidios;
 	
+//	private ArrayList<String> categorias;
+	
+	private ILista<YouTubeVideo> subLista;
+	
+	private ArrayList<Categoria> categorias;
+	
+//	private Ordenamiento<YouTubeVideo> ordenamiento;
 	
 	/**
 	 * Constructor del modelo del mundo con capacidad dada
@@ -34,8 +46,12 @@ public class Modelo {
 	{
 		datos = new ArregloDinamico<String>(pCapacidad);
 		videos = new ListaEncadenada<YouTubeVideo>();
-		vidios = new ArregloDinamico<YouTubeVideo>(9999999);
+		vidios = new ArregloDinamico<YouTubeVideo>(100);
+//		categorias = new ArrayList<String>(100);
+		categorias = new ArrayList<Categoria>(100);
 	}
+	
+	
 	
 	/**
 	 * Servicio de consulta de numero de elementos presentes en el modelo 
@@ -46,93 +62,261 @@ public class Modelo {
 		return datos.darTamano();
 	}
 
-	public void cargarListaEnlazada()throws Exception
+//	public void cargarListaEnlazada()throws Exception
+//	{
+//		try
+//		{
+////			CSVParser parser = new CSVParserBuilder().withSeparator(',').build();
+////			
+////			FileReader filereader = new FileReader("./data/videos-all.csv");
+////		     
+////			 CSVReader csvReader = ( new CSVReaderBuilder(filereader))
+////                     .withCSVParser(parser) 
+////                     .build();
+//			 
+//			 csvReader.readNext();         
+//			 String [] data;
+//			 int contador =0;
+//		     while ((data = csvReader.readNext()) != null) 
+//		     {
+//		       
+//					
+//					int k = 0; 
+//					
+//
+//					String videoID = data[k];
+//					k++;
+//					
+//					String trendingDate = data[k];
+//					k++;
+//					
+//					String channelTitle = data[k];
+//					k++;
+//					
+//					String categoryID = data[k];
+//					k++;
+//					
+//					String publishTime = data[k];
+//					k++;
+//					
+//					String tags = data[k];
+//					k++;
+//					
+//					String views = data[k];
+//					k++;
+//					
+//					String likes = data[k];
+//					k++;
+//					
+//					String dislikes = data[k];
+//					k++;
+//					
+//					String commentCount = data[k];
+//					k++;
+//					
+//					String link =data[k];
+//					k++;
+//					
+//					String commentsDisabled = data[k];
+//					k++;
+//					
+//					String ratingsDisabled = data[k];
+//					k++;
+//					
+//					String errorRemoved = data[k];
+//					k++;
+//					
+//					String description =data[k];
+//					k++;
+//
+//					String Country =data[k];
+//					k++;
+//					
+//					
+//					
+//					
+//					YouTubeVideo video = new YouTubeVideo(videoID, trendingDate, channelTitle, categoryID, publishTime, 
+//							tags, views, likes, dislikes, commentCount, link,
+//							commentsDisabled, ratingsDisabled, errorRemoved, description, Country);
+//					
+//			        
+//					videos.addLast(video);
+//					contador++;
+//					
+//					System.out.println(contador);
+//		    	 
+//		     }
+//		     System.out.println("Numero de datos leidos: " + contador);
+//		
+//		}     
+//			catch(Exception e)
+//			{
+//				e.printStackTrace();
+//			}
+//	}
+	public void cargarCategorias() throws FileNotFoundException
 	{
 		try
 		{
-			CSVParser parser = new CSVParserBuilder().withSeparator(',').build();
 			
-			FileReader filereader = new FileReader("./data/videos-all.csv");
-		     
-			 CSVReader csvReader = ( new CSVReaderBuilder(filereader))
-                     .withCSVParser(parser) 
-                     .build();
+		Reader in = new FileReader("./data/category-id.csv");
+		 
+//		CSVFormat format = CSVFormat.RFC4180.withDelimiter('\t');
+		
+		Iterable<CSVRecord> records = CSVFormat.TDF.withDelimiter('\t').withFirstRecordAsHeader().parse(in);
+	
+
+//		 int contador = 0;
+		 
+		 	for (CSVRecord record : records) 
+		 	{
+		 		String iD = record.get(0);
 			 
-			 csvReader.readNext();         
-			 String [] data;
-			 int contador =0;
-		     while ((data = csvReader.readNext()) != null) 
-		     {
+		 		String name = record.get(1);
+			 
+			 
+		 		Categoria nuevo = new Categoria(iD, name);
+			 
+			 
+		 		categorias.add(nuevo);
+			 
+//		 		System.out.println(nuevo.getiD()+"-"+nuevo.getName());
+			 
+		 	}
+		 System.out.println(categorias.size());
+		}
+		catch(Exception e)
+		{
+			
+		}
+		 
+		 
+	}
+	public void cargarArregloDinamico() throws Exception
+	{
+		
+		try
+		{
+//			CSVParser parser = new CSVParserBuilder().withSeparator(',').build();
+//			
+//			FileReader filereader = new FileReader("./data/videos-all.csv");
+//		     
+//			 CSVReader csvReader = ( new CSVReaderBuilder(filereader))
+//                     .withCSVParser(parser) 
+//                     .build();
+//			for(int i =0 ; i< categorias.size();i++)
+//			 {
+//				 System.out.println(categorias.darElemento(i));
+//			 }
+			
+			
+			 Reader in = new FileReader("./data/videos-all.csv");
+			 
+			 Iterable<CSVRecord> records = CSVFormat.RFC4180.parse(in);
+			 
+//			 String [] data = null;
+			 int contador = 0;
+			 
+			 for (CSVRecord record : records) 
+			 {
+				 
+//			 csvReader.readNext();         
+			 
+//		     while ((data = csvReader.readNext()) != null) 
+//		     {
 		       
 					
-					int k = 0; 
+//					int k = 0; 
 					
 
-					String videoID = data[k];
-					k++;
+					String videoID = record.get(0);
 					
-					String trendingDate = data[k];
-					k++;
 					
-					String channelTitle = data[k];
-					k++;
+					String trendingDate = record.get(1);
 					
-					String categoryID = data[k];
-					k++;
+					String title = record.get(2);
 					
-					String publishTime = data[k];
-					k++;
+					String channelTitle = record.get(3);
 					
-					String tags = data[k];
-					k++;
 					
-					String views = data[k];
-					k++;
+					String categoryID = record.get(4);
 					
-					String likes = data[k];
-					k++;
 					
-					String dislikes = data[k];
-					k++;
+					String publishTime = record.get(5);
 					
-					String commentCount = data[k];
-					k++;
 					
-					String link =data[k];
-					k++;
+					String tags = record.get(6);
 					
-					String commentsDisabled = data[k];
-					k++;
 					
-					String ratingsDisabled = data[k];
-					k++;
+					String views = record.get(7);
 					
-					String errorRemoved = data[k];
-					k++;
 					
-					String description =data[k];
-					k++;
+					String likes = record.get(8);
+					
+					
+					String dislikes = record.get(9);
+					
+					
+					String commentCount = record.get(10);
+					
+					
+					String link = record.get(11);
+					
+					
+					String commentsDisabled = record.get(12);
+				
+					
+					String ratingsDisabled = record.get(13);
+					
+					
+					String errorRemoved = record.get(14);
+					
+					
+					String description = record.get(15);
+					
 
-					String Country =data[k];
-					k++;
+					String country = record.get(16);
 					
 					
 					
 					
-					YouTubeVideo video = new YouTubeVideo(videoID, trendingDate, channelTitle, categoryID, publishTime, 
+					
+					YouTubeVideo video = new YouTubeVideo(videoID, trendingDate,title, channelTitle, categoryID, publishTime, 
 							tags, views, likes, dislikes, commentCount, link,
-							commentsDisabled, ratingsDisabled, errorRemoved, description, Country);
+							commentsDisabled, ratingsDisabled, errorRemoved, description, country);
 					
 			        
-					videos.addLast(video);
+					vidios.addLast(video);
 					contador++;
+//					if(categorias.contains(categoryID))
+//					{
+//						
+//					}
+//					else if(contador >= 2) 
+//					{
+//						categorias.add(categoryID);
+//					}
 					
+//					System.out.println(categoryID);
+//					ordenamiento.ordenarQuickSort(vidios, vidios.darElemento(1).getCategoryID(), true);
 					
-					System.out.println(contador);
-					
-		    	 
+					if(contador==2)
+					{
+						System.out.println(country);
+						System.out.println("Primer Video :- \n" + "Titulo:" + title +"\n Titulo Canal:" +channelTitle +"\n fecha Trending:"+ trendingDate +"\n pais:"+ country +"\n # Vistas:"+ views +"\n # Likes:"+ likes +"\n # Dislikes:"+ dislikes);
+					}
+						 
 		     }
+			 
+			 System.out.println("\nLista de categorias:- ");
+			 for (int i =0; i < categorias.size();i++)
+			 {
+				 System.out.println(categorias.get(i).getiD() + "-" + categorias.get(i).getName());
+			 }
+			
+			 
 		     System.out.println("Numero de datos leidos: " + contador);
+		     
 		
 		}     
 			catch(Exception e)
@@ -141,103 +325,41 @@ public class Modelo {
 			}
 	}
 	
-	public void cargarArregloDinamico() throws Exception
+	/**
+	 * Requerimiento de agregar dato
+	 * @param dato
+	 */
+	public ILista<YouTubeVideo> muestraDadaListaEncadenada(int pNumero)
 	{
+		subLista = videos.subList( 1 , pNumero);
 		
-		try
+		if(subLista.size()> videos.size())
 		{
-			CSVParser parser = new CSVParserBuilder().withSeparator(',').build();
-			
-			FileReader filereader = new FileReader("./data/videos-all.csv");
-		     
-			 CSVReader csvReader = ( new CSVReaderBuilder(filereader))
-                     .withCSVParser(parser) 
-                     .build();
-			 
-			 csvReader.readNext();         
-			 String [] data;
-			 int contador = 0;
-		     while ((data = csvReader.readNext()) != null) 
-		     {
-		       
-					
-					int k = 0; 
-					
-
-					String videoID = data[k];
-					k++;
-					
-					String trendingDate = data[k];
-					k++;
-					
-					String channelTitle = data[k];
-					k++;
-					
-					String categoryID = data[k];
-					k++;
-					
-					String publishTime = data[k];
-					k++;
-					
-					String tags = data[k];
-					k++;
-					
-					String views = data[k];
-					k++;
-					
-					String likes = data[k];
-					k++;
-					
-					String dislikes = data[k];
-					k++;
-					
-					String commentCount = data[k];
-					k++;
-					
-					String link =data[k];
-					k++;
-					
-					String commentsDisabled = data[k];
-					k++;
-					
-					String ratingsDisabled = data[k];
-					k++;
-					
-					String errorRemoved = data[k];
-					k++;
-					
-					String description =data[k];
-					k++;
-
-					String Country =data[k];
-					k++;
-					
-					
-					
-					
-					YouTubeVideo video = new YouTubeVideo(videoID, trendingDate, channelTitle, categoryID, publishTime, 
-							tags, views, likes, dislikes, commentCount, link,
-							commentsDisabled, ratingsDisabled, errorRemoved, description, Country);
-					
-			        
-					vidios.addLast(video);
-					contador++;
-					
-					if(contador == 0)
-					{
-						System.out.println( contador);
-					}
-		    	 
-		     }
-		     
-		     
+			subLista = videos;
+		}
 		
-		}     
-			catch(Exception e)
-			{
-				e.printStackTrace();
-			}
+//		System.out.println(subLista.size());
+		
+		return subLista;
+		
 	}
+	public ILista<YouTubeVideo> muestraDadaArregloDinamico(int pNumero)
+	{
+		subLista = vidios.subList( 1 , pNumero);
+		
+		if(subLista.size()> vidios.size())
+		{
+			subLista = vidios;
+		}
+		
+//		System.out.println(subLista.size());
+		
+		return subLista;
+		
+	}
+	
+	
+	
 	/**
 	 * Requerimiento de agregar dato
 	 * @param dato
@@ -270,5 +392,103 @@ public class Modelo {
 	public void invertir()
 	{
 		 datos.invertir();
+	}
+	
+	/**
+	 * Ejecuta el algoritmo
+	 * 
+	 */
+	public void ordenarPorSeleccion(Comparator<YouTubeVideo> criterio, boolean pAscendente)
+	{	
+		long start_time = System.currentTimeMillis(); // # tiempo de referencia inicial (mseg)
+		
+		//Instrucción o funcion a cronometrar
+		
+		Comparator<YouTubeVideo> comparadorXLikes = new YouTubeVideo.ComparadorXLikes();
+		Ordenamiento<YouTubeVideo> algsOrdenamientoVideos = new Ordenamiento<YouTubeVideo>();
+		algsOrdenamientoVideos.ordenarSeleccion(subLista, comparadorXLikes, true);
+		
+		long stop_time = System.currentTimeMillis(); //# tiempo de referencia final (mseg)
+		long elapsed_time = stop_time - start_time;
+		
+		System.out.println(elapsed_time);
+	
+	}
+	/**
+	 * Ejecuta el algoritmo
+	 * 
+	 */
+	public void ordenarPorInsercion(Comparator<YouTubeVideo> criterio, boolean pAscendente)
+	{
+		long start_time = System.currentTimeMillis(); // # tiempo de referencia inicial (mseg)
+		
+		//Instrucción o funcion a cronometrar
+		
+		Comparator<YouTubeVideo> comparadorXLikes = new YouTubeVideo.ComparadorXLikes();
+		Ordenamiento<YouTubeVideo> algsOrdenamientoVideos = new Ordenamiento<YouTubeVideo>();
+		algsOrdenamientoVideos.ordenarInsercion(subLista, comparadorXLikes, true);
+		
+		long stop_time = System.currentTimeMillis(); //# tiempo de referencia final (mseg)
+		long elapsed_time = stop_time - start_time;
+		
+		System.out.println(elapsed_time);
+	}
+	/**
+	 * Ejecuta el algoritmo
+	 * 
+	 */
+	public void ordenarPorShellSort(Comparator<YouTubeVideo> criterio, boolean pAscendente)
+	{
+		long start_time = System.currentTimeMillis(); // # tiempo de referencia inicial (mseg)
+		
+		//Instrucción o funcion a cronometrar
+		Comparator<YouTubeVideo> comparadorXLikes = new YouTubeVideo.ComparadorXLikes();
+		Ordenamiento<YouTubeVideo> algsOrdenamientoVideos = new Ordenamiento<YouTubeVideo>();
+		algsOrdenamientoVideos.ordenarShellSort(subLista, comparadorXLikes, true);
+		
+		long stop_time = System.currentTimeMillis(); //# tiempo de referencia final (mseg)
+		long elapsed_time = stop_time - start_time;
+		
+		System.out.println(elapsed_time);
+	}
+	/**
+	 * Ejecuta el algoritmo
+	 * 
+	 */
+	public void ordenarPorMergeSort(Comparator<YouTubeVideo> criterio, boolean pAscendente)
+	{
+		
+		long start_time = System.currentTimeMillis(); // # tiempo de referencia inicial (mseg)
+		
+		//Instrucción o funcion a cronometrar
+		
+		Comparator<YouTubeVideo> comparadorXLikes = new YouTubeVideo.ComparadorXLikes();
+		Ordenamiento<YouTubeVideo> algsOrdenamientoVideos = new Ordenamiento<YouTubeVideo>();
+		algsOrdenamientoVideos.ordenarMergeSort(subLista, comparadorXLikes, true);
+		
+		long stop_time = System.currentTimeMillis(); //# tiempo de referencia final (mseg)
+		long elapsed_time = stop_time - start_time;
+		
+		System.out.println(elapsed_time);
+	}
+	/**
+	 * Ejecuta el algoritmo
+	 * 
+	 */
+	public void ordenarPorQuickSort(Comparator<YouTubeVideo> criterio, boolean pAscendente)
+	{
+		
+		
+		
+		long start_time = System.currentTimeMillis(); // # tiempo de referencia inicial (mseg)
+		
+		//Instrucción o funcion a cronometrar
+		Comparator<YouTubeVideo> comparadorXLikes = new YouTubeVideo.ComparadorXLikes();
+		Ordenamiento<YouTubeVideo> algsOrdenamientoVideos = new Ordenamiento<YouTubeVideo>();
+		algsOrdenamientoVideos.ordenarQuickSort(subLista, comparadorXLikes, true);
+		
+		long stop_time = System.currentTimeMillis(); //# tiempo de referencia final (mseg)
+		long elapsed_time = stop_time - start_time;
+		System.out.println(elapsed_time);
 	}
 }
