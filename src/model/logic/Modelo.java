@@ -3,6 +3,7 @@ package model.logic;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -16,7 +17,7 @@ import model.data_structures.ILista;
 import model.data_structures.ListaEncadenada;
 
 import model.logic.YouTubeVideo.ComparadorXLikes;
-
+import utils.ComparadorXDiasTendencia;
 import utils.ComparadorXViews;
 
 import utils.Ordenamiento;
@@ -596,7 +597,7 @@ public class Modelo {
 		}
 		return videosPaisTag;		
 	}
-	public ILista videosConMasLikes(String pais, int numero, String tags)
+	public void videosConMasLikes(String pais, int numero, String tags)
 	{
 		ListaEncadenada<YouTubeVideo> videosDevolver = (ListaEncadenada<YouTubeVideo>) videosDelPaisTag(pais, tags);
 		Ordenamiento ordenar = new Ordenamiento<>();
@@ -611,7 +612,30 @@ public class Modelo {
 								videox.getViews() + ", likes: " + videox.getLikes() + ", dislikes: "
 								 + videox.getDislikes() + ", tags: " + videox.getTags());
 		}
-		return datos;
+		
+	}
+	public ILista subListaPais(String pais)
+	{
+		ListaEncadenada<YouTubeVideo> listaPais = new ListaEncadenada<>();
+		for (int i = 1; i <= vidios.size(); i++) 
+		{
+			if(vidios.getElement(i).getCountry().equals(pais))
+			{
+				listaPais.addLast(vidios.getElement(i));
+			}
+		}
+		return listaPais;
+	}
+	public void videoConMasTrendingPais(String pais) throws ParseException
+	{
+		ListaEncadenada<YouTubeVideo> listaPais =new ListaEncadenada<>();
+		listaPais = (ListaEncadenada<YouTubeVideo>) subListaPais(pais);
+		ComparadorXDiasTendencia comparador = new ComparadorXDiasTendencia();
+		Ordenamiento ordenar = new Ordenamiento<>();
+		ordenar.ordenarShellSort(listaPais, comparador, false);
+		YouTubeVideo video = listaPais.getElement(1);
+		System.out.println(" titulo: " + video.getTitle() + " canal: " + video.getChannelTitle() +" pais: "
+				+ video.getCountry() + " dias tendencia:" + video.diasEnTendencia());
 	}
 	
 }
