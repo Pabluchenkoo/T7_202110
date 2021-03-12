@@ -20,11 +20,11 @@ public class View
 			
 			System.out.println("3. Req 1");
 			
-			System.out.println("4. Eliminar String");
+			System.out.println("4. Req 2");
 			
-			System.out.println("5. Imprimir el Arreglo");
+			System.out.println("5. Req 3");
 			
-			System.out.println("6. Invertir Arreglo");
+			System.out.println("6. Req 4 ");
 			
 			System.out.println("7. Dar SubLista");
 			

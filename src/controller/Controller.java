@@ -1,5 +1,6 @@
 package controller;
 
+import java.text.ParseException;
 import java.util.Comparator;
 import java.util.Scanner;
 
@@ -32,7 +33,7 @@ public class Controller {
 		
 	}
 		
-	public void run() 
+	public void run() throws ParseException 
 	{
 		Scanner lector = new Scanner(System.in);
 		boolean fin = false;
@@ -92,30 +93,34 @@ public class Controller {
 					break;
 
 				case 4:
-					view.printMessage("--------- \nDar cadena (simple) a eliminar: ");
+					view.printMessage("--------- \nReq2 ");
+					
 					dato = lector.next();
-					respuesta = modelo.eliminar(dato);
-					if ( respuesta != null)
-					{
-						view.printMessage("Dato eliminado "+ respuesta);
-					}
-					else
-					{
-						view.printMessage("Dato NO eliminado");							
-					}
-					view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");						
+					
+					modelo.videoConMasTrendingPais(dato);
+											
 					break;
 
 				case 5: 
-					view.printMessage("--------- \nContenido del Arreglo: ");
-					view.printModelo(modelo);
-					view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");						
+					view.printMessage("--------- \nReq3 ");
+					
+					dato = lector.next();
+					
+					modelo.videoConMasTrendingCategoria(dato);						
 					break;	
 					
 				case 6: 
-					view.printMessage("--------- \nDar arreglo invertido\n---------");
+					view.printMessage("--------- \nReq4\n---------");
+					
+					view.printMessage("--------- \nDar pais: ");
 					dato = lector.next();
-					modelo.invertir();
+					view.printMessage("--------- \nDar numero: ");
+					Scanner myInput1 = new Scanner( System.in );
+					int a1 = myInput1.nextInt();
+					
+					view.printMessage("--------- \nDar tag: ");
+					dato1 = lector.next();
+					modelo.videosConMasLikes(dato, a1 ,dato1 );
 					lector.close();
 					break;	
 					

@@ -637,5 +637,30 @@ public class Modelo {
 		System.out.println(" titulo: " + video.getTitle() + " canal: " + video.getChannelTitle() +" pais: "
 				+ video.getCountry() + " dias tendencia:" + video.diasEnTendencia());
 	}
-	
+	public ILista subListaCategoria(String categoria)
+	{
+		ListaEncadenada<YouTubeVideo> listaCategoria = new ListaEncadenada<>();
+		
+		String pCategoria = esCategoria(categoria);
+		
+		for (int i = 1; i <= vidios.size(); i++) 
+		{
+			if(vidios.getElement(i).getCategoryID().equals(pCategoria))
+			{
+				listaCategoria.addLast(vidios.getElement(i));
+			}
+		}
+		return listaCategoria;
+	}
+	public void videoConMasTrendingCategoria(String categoria) throws ParseException
+	{
+		ListaEncadenada<YouTubeVideo> listaCategoria =new ListaEncadenada<>();
+		listaCategoria = (ListaEncadenada<YouTubeVideo>) subListaPais(categoria);
+		ComparadorXDiasTendencia comparador = new ComparadorXDiasTendencia();
+		Ordenamiento ordenar = new Ordenamiento<>();
+		ordenar.ordenarShellSort(listaCategoria, comparador, false);
+		YouTubeVideo video = listaCategoria.getElement(1);
+		System.out.println(" titulo: " + video.getTitle() + " canal: " + video.getChannelTitle() +" category id: "
+				+ video.getCategoryID() + " dias tendencia:" + video.diasEnTendencia());
+	}
 }
