@@ -297,18 +297,18 @@ public class Modelo {
 							tags, views, likes, dislikes, commentCount, link,
 							commentsDisabled, ratingsDisabled, errorRemoved, description, country);
 					
-					String llave = Company;
+					String llave = videoID;
 					
 					if( tablaLinear.contains(llave) )
 					{
-						Double nueroActualCopañias = tablaLinear.get(llave);
-						tablaLinear.put(llave, nueroActualCopañias +1 ); 
+						String numeroActualID = tablaLinear.get(llave);
+						tablaLinear.put(llave, numeroActualID + 1 ); 
 						
 					}
 					else
 					{		
 						
-						tablaLinear.put(llave, number);
+						tablaLinear.put(llave, title);
 						
 					}
 					vidios.addLast(video);
