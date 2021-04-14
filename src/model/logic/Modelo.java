@@ -15,7 +15,8 @@ import org.apache.commons.csv.CSVRecord;
 import model.data_structures.ArregloDinamico;
 import model.data_structures.ILista;
 import model.data_structures.ListaEncadenada;
-
+import model.data_structures.TablaHashLinearProbing;
+import model.data_structures.TablaHashSeparateChaining;
 import model.logic.YouTubeVideo.ComparadorXLikes;
 import utils.ComparadorXDiasTendencia;
 import utils.ComparadorXViews;
@@ -41,6 +42,9 @@ public class Modelo {
 	private ILista<YouTubeVideo> subLista;
 	
 	private ArrayList<Categoria> categorias;
+	
+	private TablaHashLinearProbing< String , String> tablaLinear;
+	private TablaHashSeparateChaining<String , String> tablaSeparate;
 	
 //	private Ordenamiento<YouTubeVideo> ordenamiento;
 	
@@ -293,7 +297,20 @@ public class Modelo {
 							tags, views, likes, dislikes, commentCount, link,
 							commentsDisabled, ratingsDisabled, errorRemoved, description, country);
 					
-			        
+					String llave = Company;
+					
+					if( tablaLinear.contains(llave) )
+					{
+						Double nueroActualCopañias = tablaLinear.get(llave);
+						tablaLinear.put(llave, nueroActualCopañias +1 ); 
+						
+					}
+					else
+					{		
+						
+						tablaLinear.put(llave, number);
+						
+					}
 					vidios.addLast(video);
 					contador++;
 //					if(categorias.contains(categoryID))
