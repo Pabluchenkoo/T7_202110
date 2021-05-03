@@ -1,11 +1,15 @@
 package model.logic;
 
 import java.io.FileNotFoundException;
+
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.Reader;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -15,6 +19,7 @@ import org.apache.commons.csv.CSVRecord;
 import model.data_structures.ArregloDinamico;
 import model.data_structures.ILista;
 import model.data_structures.ListaEncadenada;
+import model.data_structures.RedBlackTree;
 import model.data_structures.TablaHashLinearProbing;
 import model.data_structures.TablaHashSeparateChaining;
 import model.logic.YouTubeVideo.ComparadorXLikes;
@@ -28,9 +33,12 @@ import utils.Ordenamiento;
  *
  */
 public class Modelo {
+	private static final String VIDEO = "./data/videos-all.csv";
 	/**
 	 * Atributos del modelo del mundo
 	 */
+	private RedBlackTree<Double, ArregloDinamico<Repeticion>> arbol;
+	
 	private ArregloDinamico<String> datos;
 	
 	private ListaEncadenada<YouTubeVideo> videos;
@@ -54,13 +62,14 @@ public class Modelo {
 	 * Constructor del modelo del mundo con capacidad dada
 	 * @param tamano
 	 */
-	public Modelo(int pCapacidad)
+	public Modelo()
 	{
-		datos = new ArregloDinamico<String>(pCapacidad);
+		datos = new ArregloDinamico<String>();
 		videos = new ListaEncadenada<YouTubeVideo>();
 		vidios = new ArregloDinamico<YouTubeVideo>(100);
 //		categorias = new ArrayList<String>(100);
 		categorias = new ArrayList<Categoria>(100);
+		arbol = new RedBlackTree<Double, ArregloDinamico<Repeticion>>(); 
 	}
 	
 	
@@ -71,7 +80,7 @@ public class Modelo {
 	 */
 	public int darTamano()
 	{
-		return datos.darTamano();
+		return datos.size();
 	}
 
 //	public void cargarListaEnlazada()throws Exception
@@ -204,7 +213,7 @@ public class Modelo {
 		 
 		 
 	}
-	public void cargarArregloDinamico() throws Exception
+/*	public void cargarArregloDinamico() throws Exception
 	{
 		
 		try
@@ -348,6 +357,56 @@ public class Modelo {
 			{
 				e.printStackTrace();
 			}
+	}*/
+	public String cargar() throws ParseException, IOException{
+		Reader in = new FileReader(VIDEO);
+		Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(in);	
+		int i = 0;
+		for (CSVRecord record : records) {
+		    String instrumentalness = record.get(0);
+		    String liveness = record.get(1);
+		    String speechiness = record.get(2);
+		    String danceability = record.get(3);
+		    String valence = record.get(4);
+		    String loudness = record.get(5);
+		    String tempo = record.get(6);
+		    String acousticness = record.get(7);
+		    String energy  = record.get(8);
+		    String mode = record.get(9);
+		    String key = record.get(10);
+		    String artist_id = record.get(11);
+		    String tweet_lang = record.get(12);
+		    String track_id = record.get(13);
+		    String created_at = record.get(14);
+		    String lang = record.get(15);
+		    String time_zone = record.get(16);
+		    String user_id = record.get(17);
+		    String id = record.get(18);
+		    //--------------------------------------------------------------------
+		    if(!instrumentalness.equals("instrumentalness")){
+		    SimpleDateFormat formato1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		    Date fechaPu = formato1.parse(created_at);			    
+		    Repeticion nuevo = new Repeticion(Double.parseDouble(instrumentalness), Double.parseDouble(liveness), Double.parseDouble(speechiness), Double.parseDouble(danceability), Double.parseDouble(valence), Double.parseDouble(loudness), Double.parseDouble(tempo),Double.parseDouble(acousticness), Double.parseDouble(energy),(int) Double.parseDouble(mode), (int) Double.parseDouble(key), artist_id, tweet_lang, track_id, fechaPu, lang, time_zone, (int) Double.parseDouble(user_id), (int) Double.parseDouble(id)); 
+		    Double llave = nuevo.darDanceability();
+		    ArregloDinamico<Repeticion> valor = arbol.get(llave);
+		    															
+		    if(valor == null){
+		    	ArregloDinamico<Repeticion> v = new ArregloDinamico<Repeticion>();
+		    	v.addLast(nuevo);
+		    	arbol.put(llave, v);
+		    }
+		    else{
+		    	valor.addLast(nuevo);
+		    	arbol.put(llave, valor);
+		    }		    		  
+		    }
+		} 
+		double menor = arbol.min();
+		double mayor = arbol.max();
+		return " Eventos escucha: "+arbol.size()+"\n Llaves: "+arbol.keySet().size()
+		+"\n Altura: "+arbol.height()
+		+"\n Menor: "+ menor +":"+ arbol.get(menor).size() 
+		+ "\n mayor: "+ mayor +":"+arbol.get(mayor).size();
 	}
 	
 	
@@ -386,7 +445,7 @@ public class Modelo {
 		
 		ArregloDinamico<YouTubeVideo> videosPorCategoria = new ArregloDinamico<>(100); 
 		
-		for (int i =0; i < vidios.darTamano(); i++)
+		for (int i =0; i < vidios.size(); i++)
 		{
 			String categoria = vidios.darElemento(i).getCategoryID();
 			
