@@ -8,7 +8,7 @@ package model.data_structures;
  * @author Fernando De la Rosa
  *
  */
-public class ArregloDinamico <T extends Comparable<T>> implements ILista<T> 
+public class ArregloDinamico <T extends Comparable<T>> implements ILista<T>, Comparable<ArregloDinamico<T>> 
 {
 	/**
 	 * Capacidad maxima del arreglo
@@ -34,6 +34,12 @@ public class ArregloDinamico <T extends Comparable<T>> implements ILista<T>
 		tamanoMax = max;
 		tamanoAct = 0;
 	}
+	public ArregloDinamico()
+	{
+		elementos = (T[]) new Comparable[1];
+		tamanoMax = 1;
+		tamanoAct = 0;
+	}
 	public void agregar(T dato )
 	{
 		if ( tamanoAct == tamanoMax )
@@ -55,7 +61,7 @@ public class ArregloDinamico <T extends Comparable<T>> implements ILista<T>
 		return tamanoMax;
 	}
 
-	public int darTamano() {
+	public int size() {
 		return tamanoAct;
 	}
 
@@ -235,27 +241,28 @@ public class ArregloDinamico <T extends Comparable<T>> implements ILista<T>
 	@Override
 	public T firstElement() {
 		// TODO Auto-generated method stub
-		return elementos[0];
+		return elementos[0	];
 	}
 	@Override
 	public T lastElement() {
 		// TODO Auto-generated method stub
-		return elementos[tamanoMax];
+		return elementos[tamanoAct-1];
 	}
 	@Override
 	public T getElement(int pos) {
 		// TODO Auto-generated method stub
-		return elementos[pos-1];
+		T buscado = null;
+		int posReal = pos-1;
+		if(posReal<=tamanoMax){
+			return elementos[posReal];
+		}
+		return buscado;
 	}
-	@Override
-	public int size() {
-		// TODO Auto-generated method stub
-		return tamanoAct;
-	}
+	
 	@Override
 	public boolean isEmpty() {
 		// TODO Auto-generated method stub
-		return elementos[0]==null;
+		return (tamanoAct==0)?true:false;
 	}
 	@Override
 	public int isPresent(T element) {
@@ -282,7 +289,8 @@ public class ArregloDinamico <T extends Comparable<T>> implements ILista<T>
 	@Override
 	public void changeInfo(int pos, T element) {
 		// TODO Auto-generated method stub
-		elementos[pos-1]=element;
+		int posicion = pos-1;
+		elementos[posicion]=element;
 	}
 	@Override
 	public ILista<T> subList(int principio, int fin) 
@@ -294,5 +302,25 @@ public class ArregloDinamico <T extends Comparable<T>> implements ILista<T>
 			arregloDevolver.addLast(elementos[i]);
 		}
 		return arregloDevolver;
+	}
+	@Override
+	public int compareTo(ArregloDinamico<T> arg0) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public ILista<T> subList2(int numElement) {
+		ArregloDinamico<T> copia =  new ArregloDinamico<T>();
+		if(numElement >= tamanoAct){
+			copia = this;
+		}
+		else{
+			for(int i = 1; i<=numElement;i++)
+			{
+				T x = getElement(i);
+				copia.addLast(x);
+			}
+		}
+		return copia;
 	}
 }

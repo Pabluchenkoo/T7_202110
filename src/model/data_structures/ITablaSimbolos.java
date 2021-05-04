@@ -1,6 +1,6 @@
 package model.data_structures;
 
-public interface ITablaSimbolos<K extends Comparable<K>,V extends Comparable<V>> {
+public interface ITablaSimbolos<K extends Comparable<K>,V extends Comparable<V> > {
 	void put(K k, V v);
 	V get(K k);
 	V remove(K k);
@@ -8,8 +8,8 @@ public interface ITablaSimbolos<K extends Comparable<K>,V extends Comparable<V>>
 	boolean isEmpty ( );
 	int size ( );
 	ILista<K> keySet();
-	
 	ILista<V> valueSet();
-	
 	int hash(K key);
+	ILista<V> valuesInRange(K init, K end);
+	ILista<K> keysInRange(K init, K end);
 }
