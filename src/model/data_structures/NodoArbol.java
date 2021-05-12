@@ -161,6 +161,16 @@ public class NodoArbol<K extends Comparable<K>, V> implements Comparable<NodoArb
 		return nodo;
 	}
 	
+	public ArregloDinamico<K> keysInRange(ArregloDinamico<K> list, K i, K f){
+		int menor = f.compareTo(llave);
+		int mayor = i.compareTo(llave);
+		if(menor<0) izquierdo.keysInRange(list, i, f);
+		if(menor<=0 && mayor>=0) list.addLast(llave);
+		if(mayor>0) derecho.keysInRange(list, i, f);
+		return list;
+	}
+
+	
 	public NodoArbol<K,V> RL(NodoArbol<K,V> nodo){
 		NodoArbol<K,V> der = nodo.darDerecho();
 		nodo.asignarDerecho(der.darIzquierdo());
@@ -192,4 +202,13 @@ public class NodoArbol<K extends Comparable<K>, V> implements Comparable<NodoArb
 		return llave.compareTo(o.darLlave());
 	}
 
+	public ArregloDinamico valuesInRange(ArregloDinamico list, K i, K f){
+		
+		int menor = f.compareTo(llave);
+		int mayor = i.compareTo(llave);
+		if((menor<0||mayor<0)&&izquierdo!=null) izquierdo.valuesInRange(list, i, f);
+		if(menor>=0 && mayor<=0) list.addLast((Comparable) valor);
+		if((mayor>0||menor>0)&&derecho!=null) derecho.valuesInRange(list, i, f);
+		return list;
+	}
 }

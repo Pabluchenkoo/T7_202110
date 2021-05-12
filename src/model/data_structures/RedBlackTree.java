@@ -21,29 +21,29 @@ public class RedBlackTree<K extends Comparable<K>, V extends Comparable<V>> impl
 		return n==0;
 	}
 
-	public V get(K key) {
+	public V get(K k) {
 		if(raiz == null){
 			return null;
 		}
 		else{
-			NodoArbol<K,V> nodo = raiz.get(key);
+			NodoArbol<K,V> nodo = raiz.get(k);
 			return (nodo!=null)?nodo.darValor():null;
 		}
 	}
 
-	public int getHeight(K key){
-		NodoArbol<K, V> buscado = raiz.get(key);
+	public int getHeight(K k){
+		NodoArbol<K, V> buscado = raiz.get(k);
 		return (buscado==null)?-1:buscado.getHeight();
 	}
 
-	public boolean contains(K key) {
+	public boolean contains(K k) {
 		
-		return get(key)!=null;
+		return get(k)!=null;
 	}
 
 	
-	public void put(K key, V val) {
-		NodoArbol<K, V> nuevo = new NodoArbol<K,V>(key, val);
+	public void put(K k, V v) {
+		NodoArbol<K, V> nuevo = new NodoArbol<K,V>(k, v);
 		if(raiz==null){
 			raiz = nuevo;
 		}
@@ -80,25 +80,6 @@ public class RedBlackTree<K extends Comparable<K>, V extends Comparable<V>> impl
 		return raiz.valueSet(listaValores);
 	}
 
-	@Override
-	public ILista<K> keysInRange(K init, K end) {
-			ILista<K> listaLlaves = new ArregloDinamico<K>();
-			listaLlaves = keySet();
-			int i = listaLlaves.isPresent(init);
-			int f = listaLlaves.isPresent(end);
-			return listaLlaves.subList(i, f);
-	}
-
-	@Override
-	public ILista<V> valuesInRange(K init, K end) {
-		ILista<K> llaves = keysInRange(init, end);
-		ILista<V> listaValores = new ArregloDinamico<V>();
-		for(int i=1; i<=llaves.size();i++){
-			listaValores.addLast(get(llaves.getElement(i)));
-		}
-		
-		return listaValores;
-	}
 
 	@Override
 	public V remove(K k) {
@@ -106,7 +87,19 @@ public class RedBlackTree<K extends Comparable<K>, V extends Comparable<V>> impl
 		return null;
 	}
 
+	public ILista<K> keysInRange(K init, K end) {
+			ArregloDinamico<K> listaLlaves = new ArregloDinamico<K>();
+			if (raiz!=null)
+				raiz.keysInRange(listaLlaves, init, end);
+			return listaLlaves;
+	}
 
+	public ILista<V> valuesInRange(K init, K end) {
+		ArregloDinamico<V> listaValores = new ArregloDinamico<V>();
+		if (raiz!=null)
+			raiz.valuesInRange(listaValores, init, end);
+		return listaValores;
+	}
 
 	@Override
 	public int hash(K key) {

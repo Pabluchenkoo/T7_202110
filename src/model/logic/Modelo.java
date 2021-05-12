@@ -22,6 +22,7 @@ import model.data_structures.ListaEncadenada;
 import model.data_structures.RedBlackTree;
 import model.data_structures.TablaHashLinearProbing;
 import model.data_structures.TablaHashSeparateChaining;
+import model.data_structures.TablaSimbolos;
 import model.logic.YouTubeVideo.ComparadorXLikes;
 import utils.ComparadorXDiasTendencia;
 import utils.ComparadorXViews;
@@ -33,13 +34,20 @@ import utils.Ordenamiento;
  *
  */
 public class Modelo {
-	private static final String VIDEO = "./data/videos-all.csv";
+	
+	private static final String HASHTAG = "./data/user_track_hashtag_timestamp-small.csv";
+	private static final String SENTIMENT_VALUES = "./data/sentiment_values.csv";
+	private static final String VIDEO = "./data/context_content_features-small.csv";
 	/**
 	 * Atributos del modelo del mundo
 	 */
+	private ArregloDinamico<Repeticion> lista;
+	
 	private RedBlackTree<Double, ArregloDinamico<Repeticion>> arbol;
 	
 	private ArregloDinamico<String> datos;
+	
+	private ArregloDinamico<String> caracteristicasCancion;
 	
 	private ListaEncadenada<YouTubeVideo> videos;
 	
@@ -47,11 +55,18 @@ public class Modelo {
 	
 //	private ArrayList<String> categorias;
 	
+	private TablaSimbolos<String, ArregloDinamico<String>> tablaTags;
+	
 	private ILista<YouTubeVideo> subLista;
+	
+	private TablaSimbolos<String, Double> valoresSentimentales;
 	
 	private ArrayList<Categoria> categorias;
 	
+	private TablaHashSeparateChaining<String, ArregloDinamico<Double>> generos;
+	
 	private TablaHashLinearProbing< String , String> tablaLinear;
+	
 	private TablaHashSeparateChaining<String , String> tablaSeparate;
 	
 //	private Ordenamiento<YouTubeVideo> ordenamiento;
@@ -70,6 +85,57 @@ public class Modelo {
 //		categorias = new ArrayList<String>(100);
 		categorias = new ArrayList<Categoria>(100);
 		arbol = new RedBlackTree<Double, ArregloDinamico<Repeticion>>(); 
+		lista = new ArregloDinamico<Repeticion>();
+		caracteristicasCancion = new ArregloDinamico<>();
+		caracteristicasCancion.addLast("danceability");
+		caracteristicasCancion.addLast("speechiness");
+		caracteristicasCancion.addLast("instrumentalness");
+		caracteristicasCancion.addLast("energy");
+		caracteristicasCancion.addLast("acousticness");
+		caracteristicasCancion.addLast("valence");	
+		caracteristicasCancion.addLast("liveness");
+
+		generos = new TablaHashSeparateChaining<>(9, 1.5);
+		ArregloDinamico<Double> a = new ArregloDinamico<Double>();
+		a.addLast(60.0);
+		a.addLast(90.0);
+		generos.put("Reggae",a);
+		ArregloDinamico<Double> b = new ArregloDinamico<Double>();
+		b.addLast(70.0);
+		b.addLast(100.0);
+		generos.put("Down-tempo",b);
+		ArregloDinamico<Double> c = new ArregloDinamico<Double>();
+		c.addLast(90.0);
+		c.addLast(120.0);
+		generos.put("Chill-out",c);
+		ArregloDinamico<Double> d = new ArregloDinamico<Double>();
+		d.addLast(85.0);
+		d.addLast(115.0);
+		generos.put("Hip-hop",d);
+		ArregloDinamico<Double> e = new ArregloDinamico<Double>();
+		e.addLast(120.0);
+		e.addLast(125.0);
+		generos.put("Jazz and Funk",e);
+		ArregloDinamico<Double> f = new ArregloDinamico<Double>();
+		f.addLast(100.0);
+		f.addLast(130.0);
+		generos.put("Pop",f);
+		ArregloDinamico<Double> g = new ArregloDinamico<Double>();
+		g.addLast(60.0);
+		g.addLast(80.0);
+		generos.put("R&B",g);
+		ArregloDinamico<Double> h = new ArregloDinamico<Double>();
+		h.addLast(110.0);
+		h.addLast(140.0);
+		generos.put("Rock",h);
+		ArregloDinamico<Double> i = new ArregloDinamico<Double>();
+		i.addLast(100.0);
+		i.addLast(160.0);
+		generos.put("Metal",i);
+		
+	    valoresSentimentales = new TablaSimbolos<>(5300);
+		tablaTags = new TablaSimbolos<>(87810);
+	
 	}
 	
 	
@@ -360,9 +426,9 @@ public class Modelo {
 	}*/
 	public String cargar() throws ParseException, IOException{
 		Reader in = new FileReader(VIDEO);
-		Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(in);	
+		Iterable<CSVRecord> grabaciones = CSVFormat.EXCEL.parse(in);	
 		int i = 0;
-		for (CSVRecord record : records) {
+		for (CSVRecord record : grabaciones) {
 		    String instrumentalness = record.get(0);
 		    String liveness = record.get(1);
 		    String speechiness = record.get(2);
@@ -386,28 +452,61 @@ public class Modelo {
 		    if(!instrumentalness.equals("instrumentalness")){
 		    SimpleDateFormat formato1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		    Date fechaPu = formato1.parse(created_at);			    
-		    Repeticion nuevo = new Repeticion(Double.parseDouble(instrumentalness), Double.parseDouble(liveness), Double.parseDouble(speechiness), Double.parseDouble(danceability), Double.parseDouble(valence), Double.parseDouble(loudness), Double.parseDouble(tempo),Double.parseDouble(acousticness), Double.parseDouble(energy),(int) Double.parseDouble(mode), (int) Double.parseDouble(key), artist_id, tweet_lang, track_id, fechaPu, lang, time_zone, (int) Double.parseDouble(user_id), (int) Double.parseDouble(id)); 
-		    Double llave = nuevo.darDanceability();
-		    ArregloDinamico<Repeticion> valor = arbol.get(llave);
-		    															
-		    if(valor == null){
-		    	ArregloDinamico<Repeticion> v = new ArregloDinamico<Repeticion>();
-		    	v.addLast(nuevo);
-		    	arbol.put(llave, v);
+		    ArregloDinamico<Double> caracteristicas = new ArregloDinamico<Double>();
+		    caracteristicas.addLast(Double.parseDouble(danceability));
+		    
+		    caracteristicas.addLast(Double.parseDouble(speechiness));
+		    
+			caracteristicas.addLast(Double.parseDouble(instrumentalness));
+			
+			caracteristicas.addLast(Double.parseDouble(energy));
+			
+			caracteristicas.addLast(Double.parseDouble(acousticness));
+			
+			caracteristicas.addLast(Double.parseDouble(valence));
+			
+			caracteristicas.addLast(Double.parseDouble(liveness));
+			
+
+			Repeticion nuevo = new Repeticion(caracteristicas,Double.parseDouble(loudness), Double.parseDouble(tempo),(int) Double.parseDouble(mode), (int) Double.parseDouble(key), artist_id, tweet_lang, track_id, fechaPu, lang, time_zone, (int) Double.parseDouble(user_id), (int) Double.parseDouble(id)); 
+			lista.addLast(nuevo);
+		    }}
+		    
+	in = new FileReader(SENTIMENT_VALUES);
+	grabaciones = CSVFormat.EXCEL.parse(in);			
+	for (CSVRecord grabado : grabaciones) {
+		String tag = grabado.get(0);
+		String promedio = grabado.get(4);
+		//----------------------------------
+		if(!tag.equals("hashtag")){
+			if(promedio.equals(""))
+				valoresSentimentales.put(tag, 0.0);
+			else
+				valoresSentimentales.put(tag, Double.parseDouble(promedio)); 
+		}			
+	}
+	in = new FileReader(HASHTAG);
+	grabaciones = CSVFormat.EXCEL.parse(in);			
+	for (CSVRecord grabado : grabaciones) {
+		String id = grabado.get(1);
+		String hashtag = grabado.get(2);
+		if(!hashtag.equals("hashtag")){
+			String k = id;
+			int aux2 = tablaTags.keySet().isPresent(k);
+		    if(aux2 ==-1){
+		    	ArregloDinamico<String> v = new ArregloDinamico<String>();
+		    	v.addLast(hashtag);			    	
+		    	tablaTags.put(k, v);			    				    	
 		    }
 		    else{
-		    	valor.addLast(nuevo);
-		    	arbol.put(llave, valor);
-		    }		    		  
+		    	ArregloDinamico<String> valor =  tablaTags.get(k);
+		    	valor.addLast(hashtag);			    	
+		    	tablaTags.put(k, valor);			    				    	
 		    }
-		} 
-		double menor = arbol.min();
-		double mayor = arbol.max();
-		return " Eventos escucha: "+arbol.size()+"\n Llaves: "+arbol.keySet().size()
-		+"\n Altura: "+arbol.height()
-		+"\n Menor: "+ menor +":"+ arbol.get(menor).size() 
-		+ "\n mayor: "+ mayor +":"+arbol.get(mayor).size();
+		}
 	}
+	return "";
+}
 	
 	
 	public String esCategoria(String pNombreCategoria)
@@ -738,5 +837,105 @@ public class Modelo {
 		YouTubeVideo video = listaCategoria.getElement(1);
 		System.out.println(" titulo: " + video.getTitle() + " canal: " + video.getChannelTitle() +" category id: "
 				+ video.getCategoryID() + " dias tendencia:" + video.diasEnTendencia());
+	}
+	
+	public String requerimiento1(String c, double min, double max){			
+		int pos = caracteristicasCancion.isPresent(c.toLowerCase());
+		RedBlackTree<Double, ArregloDinamico<Repeticion>> arbol = new RedBlackTree<Double, ArregloDinamico<Repeticion>>();
+		for(int i=1;i<=lista.size();i++){
+			Repeticion nuevo = lista.getElement(i);					
+			double key = nuevo.darCaracteristicas().getElement(pos); 
+			ArregloDinamico<Repeticion> value = arbol.get(key);		    															
+			if(value == null){
+				ArregloDinamico<Repeticion> v = new ArregloDinamico<Repeticion>();
+				v.addLast(nuevo);
+				arbol.put(key, v);
+			}
+			else{
+				value.addLast(nuevo);
+				arbol.put(key, value);
+			}
+		}
+		ILista<ArregloDinamico<Repeticion>> totales = arbol.valuesInRange(min, max);
+		ArregloDinamico<Repeticion> todos = new ArregloDinamico<Repeticion>();
+		for(int i=1;i<=totales.size();i++){
+			ArregloDinamico<Repeticion> lista = totales.getElement(i);
+			for(int j=1; j<=lista.size();j++){
+				todos.addLast(lista.getElement(j));
+			}
+		}
+		TablaHashSeparateChaining<String, Repeticion> unicos = new TablaHashSeparateChaining<>(todos.size(), 1.5);
+		for(int i=1; i<todos.size();i++){
+			Repeticion nuevo = todos.getElement(i);
+			String key = nuevo.darArtist_id(); 
+			Repeticion aux2 =  unicos.get(key);
+			if(aux2 == null){				
+				unicos.put(key, nuevo);
+			}		
+		}
+		ArregloDinamico<Repeticion> v = (ArregloDinamico<Repeticion>) unicos.valueSet();
+		int x = unicos.size();
+		String res = "++++++++++Requerimiento1 Resultados++++++++++"+"\n"+c+" para los valores siguientes: "+min+" y "+max+"\n Total de Reproducciones "+todos.size()+" \n Artistas unicos: "+v.size();
+		return res;
+	}
+
+	public ArregloDinamico<Repeticion> req2(double minE, double maxE, double minD, double maxD){
+		TablaHashSeparateChaining<String, Repeticion> unicos = new TablaHashSeparateChaining<>(lista.size(), 1.5);
+		for(int i=1; i<lista.size();i++){
+			Repeticion nuevo = lista.getElement(i);
+			String key = nuevo.darArtist_id(); 
+			Repeticion aux2 =  unicos.get(key);
+			if(aux2 == null){				
+				unicos.put(key, nuevo);
+			}		
+		}
+		RedBlackTree<Double, ArregloDinamico<Repeticion>> arbol = new RedBlackTree<Double, ArregloDinamico<Repeticion>>();
+		ArregloDinamico<Repeticion> val = (ArregloDinamico<Repeticion>) unicos.valueSet();
+		for(int i=1; i<=val.size();i++){
+			Repeticion nuevo = lista.getElement(i);
+			if(nuevo.darCaracteristicas().getElement(4)<=maxD&&minD<=nuevo.darCaracteristicas().getElement(4)){				
+				double llave = nuevo.darCaracteristicas().getElement(7); 
+				ArregloDinamico<Repeticion> valor = arbol.get(llave);		    																	   
+				if(valor == null){
+					ArregloDinamico<Repeticion> v = new ArregloDinamico<Repeticion>();
+					v.addLast(nuevo);
+					arbol.put(llave, v);
+				}
+				else{
+					valor.addLast(nuevo);
+					arbol.put(llave, valor);
+				}
+			}
+		}
+		ILista<ArregloDinamico<Repeticion>> totales = arbol.valuesInRange(minE, maxE);
+		ArregloDinamico<Repeticion> todos = new ArregloDinamico<Repeticion>();
+		for(int i=1;i<=totales.size();i++){
+			ArregloDinamico<Repeticion> lista = totales.getElement(i);
+			for(int j=1; j<=lista.size();j++){
+				todos.addLast(lista.getElement(j));
+			}
+		}
+		return todos.subList2(5);
+	}
+
+
+
+	public void agregarNuevoGenero(String string, double parseDouble, double parseDouble2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	public String req4(String next) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	public String Req5(String string, String string2) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

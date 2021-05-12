@@ -2,6 +2,8 @@ package model.logic;
 
 import java.util.Date;
 
+import model.data_structures.ArregloDinamico;
+
 public class Repeticion implements Comparable<Repeticion>{
 
 	private double instrumentalness;
@@ -23,10 +25,11 @@ public class Repeticion implements Comparable<Repeticion>{
 	private String time_zone;
 	private int user_id;
 	private int id;
+	private ArregloDinamico<Double> caracteristicas;
 	
-	public Repeticion(double instrumentalness, double liveness, double speechiness,double danceability,double valence, double loudness,double tempo,
-	double acousticness,double energy, int mode, int key, String artist_id, String tweet_lang,String track_id, Date created_at, String lang, String time_zone, int user_id, int id) {
+	public Repeticion(ArregloDinamico<Double> caracteristicas,double loudness,double tempo, int mode, int key, String artist_id, String tweet_lang,String track_id, Date created_at, String lang, String time_zone, int user_id, int id) {
 	
+		
 		this.instrumentalness = instrumentalness;
 		this.liveness = liveness;
 		this.speechiness = speechiness;
@@ -46,6 +49,7 @@ public class Repeticion implements Comparable<Repeticion>{
 		this.time_zone = time_zone;
 		this.user_id = user_id;
 		this.id = id;
+		this.caracteristicas = caracteristicas;
 	}
 
 	/**
@@ -318,6 +322,14 @@ public class Repeticion implements Comparable<Repeticion>{
 	public int compareTo(Repeticion o) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	public ArregloDinamico<Double> darCaracteristicas(){
+		return caracteristicas;
+	}
+	
+	public void asignarCaracteristicas(ArregloDinamico caracteristicas){
+		this.caracteristicas = caracteristicas;
 	}
 	
 	

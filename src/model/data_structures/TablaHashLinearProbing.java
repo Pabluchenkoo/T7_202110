@@ -364,17 +364,4 @@ public class TablaHashLinearProbing<K extends Comparable<K>, V extends Comparabl
 		assert factorDeCarga >= 0;
 	}
 
-	@Override
-	public ILista<V> valuesInRange(K init, K end) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ILista<K> keysInRange(K init, K end) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
 }

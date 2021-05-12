@@ -309,18 +309,18 @@ public class ArregloDinamico <T extends Comparable<T>> implements ILista<T>, Com
 		return 0;
 	}
 	@Override
-	public ILista<T> subList2(int numElement) {
-		ArregloDinamico<T> copia =  new ArregloDinamico<T>();
-		if(numElement >= tamanoAct){
-			copia = this;
+	public ILista<T> subList2(int elementos) {
+		ArregloDinamico<T> clone =  new ArregloDinamico<T>();
+		if(elementos >= tamanoAct){
+			clone = this;
 		}
 		else{
-			for(int i = 1; i<=numElement;i++)
+			for(int i = 1; i<= elementos;i++)
 			{
 				T x = getElement(i);
-				copia.addLast(x);
+				clone.addLast(x);
 			}
 		}
-		return copia;
+		return clone;
 	}
 }
