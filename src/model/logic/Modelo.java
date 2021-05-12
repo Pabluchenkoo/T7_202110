@@ -72,6 +72,9 @@ public class Modelo {
 		datos = new ArregloDinamico<String>();
 		videos = new ListaEncadenada<YouTubeVideo>();
 		vidios = new ArregloDinamico<YouTubeVideo>(100);
+		contextContent = new ArregloDinamico<ContextContentFeatures>(100);
+		artistas = new ArregloDinamico<String>(100);
+		canciones = new ArregloDinamico<String>(100);
 //		categorias = new ArrayList<String>(100);
 		categorias = new ArrayList<Categoria>(100);
 		arbolContextContent = new RedBlackTree<String, ArregloDinamico<Repeticion>>(); 
@@ -188,20 +191,25 @@ public class Modelo {
 					
 
 					contextContent.addLast(entrada);
+					
 					contador++;
 					
-					System.out.println("Registros Cargados: " + contador);
 					
-					if(artistas.isPresent(userId) < 0)
+					
+					if(artistas.isPresent(userId) > 0)
 					{
 						artistas.addLast(userId);
 					}
-					else if(canciones.isPresent(trackId) < 0)
+					else if(canciones.isPresent(trackId) > 0)
 					{
 						canciones.addLast(trackId);
 					}
+					
+					
 	    		  
 			 }  
+			 
+			 System.out.println("Registros Cargados: " + contador + "Artistas Cargados: "+ artistas.size()+ " Pistas cargadas: " + canciones.size());
 				 
 			
 					
@@ -400,56 +408,56 @@ public class Modelo {
 				e.printStackTrace();
 			}
 	}*/
-	public String cargar() throws ParseException, IOException{
-		Reader in = new FileReader(VIDEO);
-		Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(in);	
-		int i = 0;
-		for (CSVRecord record : records) {
-		    String instrumentalness = record.get(0);
-		    String liveness = record.get(1);
-		    String speechiness = record.get(2);
-		    String danceability = record.get(3);
-		    String valence = record.get(4);
-		    String loudness = record.get(5);
-		    String tempo = record.get(6);
-		    String acousticness = record.get(7);
-		    String energy  = record.get(8);
-		    String mode = record.get(9);
-		    String key = record.get(10);
-		    String artist_id = record.get(11);
-		    String tweet_lang = record.get(12);
-		    String track_id = record.get(13);
-		    String created_at = record.get(14);
-		    String lang = record.get(15);
-		    String time_zone = record.get(16);
-		    String user_id = record.get(17);
-		    String id = record.get(18);
-		    //--------------------------------------------------------------------
-		    if(!instrumentalness.equals("instrumentalness")){
-		    SimpleDateFormat formato1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		    Date fechaPu = formato1.parse(created_at);			    
-		    Repeticion nuevo = new Repeticion(Double.parseDouble(instrumentalness), Double.parseDouble(liveness), Double.parseDouble(speechiness), Double.parseDouble(danceability), Double.parseDouble(valence), Double.parseDouble(loudness), Double.parseDouble(tempo),Double.parseDouble(acousticness), Double.parseDouble(energy),(int) Double.parseDouble(mode), (int) Double.parseDouble(key), artist_id, tweet_lang, track_id, fechaPu, lang, time_zone, (int) Double.parseDouble(user_id), (int) Double.parseDouble(id)); 
-		    Double llave = nuevo.darDanceability();
-		    ArregloDinamico<Repeticion> valor = arbolContextContent.get(llave);
-		    															
-		    if(valor == null){
-		    	ArregloDinamico<Repeticion> v = new ArregloDinamico<Repeticion>();
-		    	v.addLast(nuevo);
-		    	arbolContextContent.put(llave, v);
-		    }
-		    else{
-		    	valor.addLast(nuevo);
-		    	arbolContextContent.put(llave, valor);
-		    }		    		  
-		    }
-		} 
-		double menor = arbolContextContent.min();
-		double mayor = arbolContextContent.max();
-		return " Eventos escucha: "+arbolContextContent.size()+"\n Llaves: "+arbolContextContent.keySet().size()
-		+"\n Altura: "+arbolContextContent.height()
-		+"\n Menor: "+ menor +":"+ arbolContextContent.get(menor).size() 
-		+ "\n mayor: "+ mayor +":"+arbolContextContent.get(mayor).size();
-	}
+//	public String cargar() throws ParseException, IOException{
+//		Reader in = new FileReader(VIDEO);
+//		Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(in);	
+//		int i = 0;
+//		for (CSVRecord record : records) {
+//		    String instrumentalness = record.get(0);
+//		    String liveness = record.get(1);
+//		    String speechiness = record.get(2);
+//		    String danceability = record.get(3);
+//		    String valence = record.get(4);
+//		    String loudness = record.get(5);
+//		    String tempo = record.get(6);
+//		    String acousticness = record.get(7);
+//		    String energy  = record.get(8);
+//		    String mode = record.get(9);
+//		    String key = record.get(10);
+//		    String artist_id = record.get(11);
+//		    String tweet_lang = record.get(12);
+//		    String track_id = record.get(13);
+//		    String created_at = record.get(14);
+//		    String lang = record.get(15);
+//		    String time_zone = record.get(16);
+//		    String user_id = record.get(17);
+//		    String id = record.get(18);
+//		    //--------------------------------------------------------------------
+//		    if(!instrumentalness.equals("instrumentalness")){
+//		    SimpleDateFormat formato1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//		    Date fechaPu = formato1.parse(created_at);			    
+//		    Repeticion nuevo = new Repeticion(Double.parseDouble(instrumentalness), Double.parseDouble(liveness), Double.parseDouble(speechiness), Double.parseDouble(danceability), Double.parseDouble(valence), Double.parseDouble(loudness), Double.parseDouble(tempo),Double.parseDouble(acousticness), Double.parseDouble(energy),(int) Double.parseDouble(mode), (int) Double.parseDouble(key), artist_id, tweet_lang, track_id, fechaPu, lang, time_zone, (int) Double.parseDouble(user_id), (int) Double.parseDouble(id)); 
+//		    Double llave = nuevo.darDanceability();
+//		    ArregloDinamico<Repeticion> valor = arbolContextContent.get(llave);
+//		    															
+//		    if(valor == null){
+//		    	ArregloDinamico<Repeticion> v = new ArregloDinamico<Repeticion>();
+//		    	v.addLast(nuevo);
+//		    	arbolContextContent.put(llave, v);
+//		    }
+//		    else{
+//		    	valor.addLast(nuevo);
+//		    	arbolContextContent.put(llave, valor);
+//		    }		    		  
+//		    }
+//		} 
+//		double menor = arbolContextContent.min();
+//		double mayor = arbolContextContent.max();
+//		return " Eventos escucha: "+arbolContextContent.size()+"\n Llaves: "+arbolContextContent.keySet().size()
+//		+"\n Altura: "+arbolContextContent.height()
+//		+"\n Menor: "+ menor +":"+ arbolContextContent.get(menor).size() 
+//		+ "\n mayor: "+ mayor +":"+arbolContextContent.get(mayor).size();
+//	}
 	
 	
 	public String esCategoria(String pNombreCategoria)
