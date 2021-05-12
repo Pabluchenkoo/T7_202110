@@ -37,7 +37,7 @@ public class Modelo {
 	/**
 	 * Atributos del modelo del mundo
 	 */
-	private RedBlackTree<Double, ArregloDinamico<Repeticion>> arbol;
+	private RedBlackTree<String, ArregloDinamico<Repeticion>> arbolContextContent;
 	
 	private ArregloDinamico<String> datos;
 	
@@ -69,7 +69,7 @@ public class Modelo {
 		vidios = new ArregloDinamico<YouTubeVideo>(100);
 //		categorias = new ArrayList<String>(100);
 		categorias = new ArrayList<Categoria>(100);
-		arbol = new RedBlackTree<Double, ArregloDinamico<Repeticion>>(); 
+		arbolContextContent = new RedBlackTree<String, ArregloDinamico<Repeticion>>(); 
 	}
 	
 	
@@ -83,98 +83,155 @@ public class Modelo {
 		return datos.size();
 	}
 
-//	public void cargarListaEnlazada()throws Exception
-//	{
-//		try
-//		{
-////			CSVParser parser = new CSVParserBuilder().withSeparator(',').build();
-////			
-////			FileReader filereader = new FileReader("./data/videos-all.csv");
-////		     
-////			 CSVReader csvReader = ( new CSVReaderBuilder(filereader))
-////                     .withCSVParser(parser) 
-////                     .build();
-//			 
+	public void cargarArbol()throws Exception
+{
+		
+		try
+		{
+//			CSVParser parser = new CSVParserBuilder().withSeparator(',').build();
+//			
+//			FileReader filereader = new FileReader("./data/videos-all.csv");
+//		     
+//			 CSVReader csvReader = ( new CSVReaderBuilder(filereader))
+//                     .withCSVParser(parser) 
+//                     .build();
+//			for(int i =0 ; i< categorias.size();i++)
+//			 {
+//				 System.out.println(categorias.darElemento(i));
+//			 }
+			
+			
+			 Reader in = new FileReader("./data/context_content_features-small.csv");
+			 
+			 Iterable<CSVRecord> records = CSVFormat.RFC4180.parse(in);
+			 
+//			 String [] data = null;
+			 int contador = 0;
+			 
+			 for (CSVRecord record : records) 
+			 {
+				 
 //			 csvReader.readNext();         
-//			 String [] data;
-//			 int contador =0;
+			 
 //		     while ((data = csvReader.readNext()) != null) 
 //		     {
-//		       
-//					
+		       
+					
 //					int k = 0; 
-//					
-//
-//					String videoID = data[k];
-//					k++;
-//					
-//					String trendingDate = data[k];
-//					k++;
-//					
-//					String channelTitle = data[k];
-//					k++;
-//					
-//					String categoryID = data[k];
-//					k++;
-//					
-//					String publishTime = data[k];
-//					k++;
-//					
-//					String tags = data[k];
-//					k++;
-//					
-//					String views = data[k];
-//					k++;
-//					
-//					String likes = data[k];
-//					k++;
-//					
-//					String dislikes = data[k];
-//					k++;
-//					
-//					String commentCount = data[k];
-//					k++;
-//					
-//					String link =data[k];
-//					k++;
-//					
-//					String commentsDisabled = data[k];
-//					k++;
-//					
-//					String ratingsDisabled = data[k];
-//					k++;
-//					
-//					String errorRemoved = data[k];
-//					k++;
-//					
-//					String description =data[k];
-//					k++;
-//
-//					String Country =data[k];
-//					k++;
-//					
-//					
-//					
-//					
-//					YouTubeVideo video = new YouTubeVideo(videoID, trendingDate, channelTitle, categoryID, publishTime, 
-//							tags, views, likes, dislikes, commentCount, link,
-//							commentsDisabled, ratingsDisabled, errorRemoved, description, Country);
-//					
-//			        
-//					videos.addLast(video);
-//					contador++;
-//					
-//					System.out.println(contador);
-//		    	 
-//		     }
-//		     System.out.println("Numero de datos leidos: " + contador);
-//		
-//		}     
-//			catch(Exception e)
-//			{
-//				e.printStackTrace();
-//			}
-//	}
+					
+
+					String instrumentalness = record.get(0);
+					
+					
+					String liveness = record.get(1);
+					
+					String speechiness = record.get(2);
+					
+					String danceabilty = record.get(3);
+					
+					
+					String valence = record.get(4);
+					
+					
+					String loudness = record.get(5);
+					
+					
+					String tempo = record.get(6);
+					
+					
+					String acousticness = record.get(7);
+					
+					
+					String energy = record.get(8);
+					
+					
+					String mode = record.get(9);
+					
+					
+					String key = record.get(10);
+					
+					
+					String artistId = record.get(11);
+					
+					
+					String tweetLang = record.get(12);
+				
+					
+					String trackId = record.get(13);
+					
+					
+					String createdAt = record.get(14);
+					
+					
+					String language = record.get(15);
+					
+
+					String timeZone = record.get(16);
+					
+					String userId = record.get(17);
+					
+					String id = record.get(18);
+					
+					
+					
+					
+					
+					ContextContentFeatures entrada = new ContextContentFeatures(instrumentalness, liveness,speechiness, danceabilty, valence, loudness, 
+							tempo, acousticness, energy, mode, key, artistId,
+							tweetLang, trackId, createdAt, language, timeZone,userId,id );
+					
+//					String llave = videoID;
+					
+//					if( tablaLinear.contains(llave) )
+//					{
+//						String numeroActualID = tablaLinear.get(llave);
+//						tablaLinear.put(llave, numeroActualID + 1 ); 
+//						
+//					}
+//					else
+//					{		
+//						
+//						tablaLinear.put(llave, title);
+//						
+//					}
+//					vidios.addLast(video);
+					contador++;
+//					if(categorias.contains(categoryID))
+//					{
+//						
+//					}
+//					else if(contador >= 2) 
+//					{
+//						categorias.add(categoryID);
+//					}
+					
+//					System.out.println(categoryID);
+//					ordenamiento.ordenarQuickSort(vidios, vidios.darElemento(1).getCategoryID(), true);
+					
+//					if(contador==2)
+//					{
+//						System.out.println(country);
+//						System.out.println("Primer Video :- \n" + "Titulo:" + title +"\n Titulo Canal:" +channelTitle +"\n fecha Trending:"+ trendingDate +"\n pais:"+ country +"\n # Vistas:"+ views +"\n # Likes:"+ likes +"\n # Dislikes:"+ dislikes);
+//					}
+						 
+		     }
+			 
+			 System.out.println("\nLista de categorias:- ");
+			 for (int i =0; i < categorias.size();i++)
+			 {
+				 System.out.println(categorias.get(i).getiD() + "-" + categorias.get(i).getName());
+			 }
+
+			 
+		     System.out.println("Numero de datos leidos: " + contador);
+		     
+		
+		}     
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+	}
 	public void cargarCategorias() throws FileNotFoundException
 	{
 		try
@@ -388,25 +445,25 @@ public class Modelo {
 		    Date fechaPu = formato1.parse(created_at);			    
 		    Repeticion nuevo = new Repeticion(Double.parseDouble(instrumentalness), Double.parseDouble(liveness), Double.parseDouble(speechiness), Double.parseDouble(danceability), Double.parseDouble(valence), Double.parseDouble(loudness), Double.parseDouble(tempo),Double.parseDouble(acousticness), Double.parseDouble(energy),(int) Double.parseDouble(mode), (int) Double.parseDouble(key), artist_id, tweet_lang, track_id, fechaPu, lang, time_zone, (int) Double.parseDouble(user_id), (int) Double.parseDouble(id)); 
 		    Double llave = nuevo.darDanceability();
-		    ArregloDinamico<Repeticion> valor = arbol.get(llave);
+		    ArregloDinamico<Repeticion> valor = arbolContextContent.get(llave);
 		    															
 		    if(valor == null){
 		    	ArregloDinamico<Repeticion> v = new ArregloDinamico<Repeticion>();
 		    	v.addLast(nuevo);
-		    	arbol.put(llave, v);
+		    	arbolContextContent.put(llave, v);
 		    }
 		    else{
 		    	valor.addLast(nuevo);
-		    	arbol.put(llave, valor);
+		    	arbolContextContent.put(llave, valor);
 		    }		    		  
 		    }
 		} 
-		double menor = arbol.min();
-		double mayor = arbol.max();
-		return " Eventos escucha: "+arbol.size()+"\n Llaves: "+arbol.keySet().size()
-		+"\n Altura: "+arbol.height()
-		+"\n Menor: "+ menor +":"+ arbol.get(menor).size() 
-		+ "\n mayor: "+ mayor +":"+arbol.get(mayor).size();
+		double menor = arbolContextContent.min();
+		double mayor = arbolContextContent.max();
+		return " Eventos escucha: "+arbolContextContent.size()+"\n Llaves: "+arbolContextContent.keySet().size()
+		+"\n Altura: "+arbolContextContent.height()
+		+"\n Menor: "+ menor +":"+ arbolContextContent.get(menor).size() 
+		+ "\n mayor: "+ mayor +":"+arbolContextContent.get(mayor).size();
 	}
 	
 	

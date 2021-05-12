@@ -1,6 +1,6 @@
 package model.data_structures;
 
-public class NodoArbol<K extends Comparable<K>, V> implements Comparable<NodoArbol<K,V>> {
+public class NodoArbol<K extends Comparable<K>, V extends Comparable<V>> implements Comparable<NodoArbol<K,V>> {
 	
 	private K llave;
 	private V valor;
