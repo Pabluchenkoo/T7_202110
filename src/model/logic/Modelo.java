@@ -915,27 +915,159 @@ public class Modelo {
 				todos.addLast(lista.getElement(j));
 			}
 		}
-		return todos.subList2(5);
+		return (ArregloDinamico<Repeticion>) todos.subList2(5);
 	}
 
 
 
-	public void agregarNuevoGenero(String string, double parseDouble, double parseDouble2) {
-		// TODO Auto-generated method stub
-		
+	public String requerimiento4(String texto){
+		String[] genero = texto.split(",");
+		RedBlackTree<Double, ArregloDinamico<Repeticion>> arbol= new RedBlackTree<Double, ArregloDinamico<Repeticion>>();
+
+		for(int i=1;i<=lista.size();i++){
+			Repeticion nuevo = lista.getElement(i);		
+			double k = nuevo.darTempo(); 
+			ArregloDinamico<Repeticion> v = arbol.get(k);		    																	   
+			if(v == null){
+				ArregloDinamico<Repeticion> va = new ArregloDinamico<Repeticion>();
+				va.addLast(nuevo);
+				arbol.put(k, v);
+			}
+			else{
+				v.addLast(nuevo);
+				arbol.put(k, v);
+			}			
+		}	
+		String salida = "";
+		int totalCanciones = 0;
+		for(int i=0;i<genero.length;i++){
+			int cantidadCanciones = 0;			
+			ArregloDinamico<Double> num = generos.get(genero[i]);
+			ILista<ArregloDinamico<Repeticion>> newLista = arbol.valuesInRange(num.getElement(1), (num.getElement(2)));			
+			ArregloDinamico<Repeticion> listaArreglada = new ArregloDinamico<Repeticion>();
+			for(int j=1;j<=newLista.size();j++){
+				ArregloDinamico<Repeticion> todos = newLista.getElement(j);
+				for(int k=1;k<=todos.size();k++){
+					listaArreglada.addLast(todos.getElement(k));										
+				}
+			}
+			cantidadCanciones += listaArreglada.size();
+			totalCanciones+= listaArreglada.size();
+			salida = salida +"\n==========="+genero[i]+"==========="
+					+"\n Repeticiones: "+ cantidadCanciones;
+			TablaHashSeparateChaining<String, Repeticion> artistas = new TablaHashSeparateChaining<>(cantidadCanciones, 1.5);
+			for(int j=1; j<=listaArreglada.size();j++){
+				Repeticion nuevo = listaArreglada.getElement(j);
+				String key = nuevo.darArtist_id(); 
+				Repeticion aux2 =  artistas.get(key);
+				if(aux2 == null){				
+					artistas.put(key, nuevo);
+				}
+			}	
+			ArregloDinamico<String> listaIdsArtistas = artistas.keySet(); 
+			salida = salida+"\nArtistas\n";
+			for(int j=1;j<=10;j++){
+				salida = salida +" \n Artista "+j+": "+listaIdsArtistas.getElement(j);
+			}
+		}
+		salida = "+++++++Requerimiento 4+++++++\n Total de reproducciones: "+ totalCanciones+salida;
+		return salida;
+
+	}
+	
+	public void agregarNuevoGenero(String nombre,Double minTempo, Double maxTempo){
+		ArregloDinamico<Double> aux = new ArregloDinamico<Double>();
+		aux.addLast(minTempo);
+		aux.addLast(maxTempo);
+		generos.put(nombre,aux);
 	}
 
 
 
-	public String req4(String next) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
-	public String Req5(String string, String string2) {
-		// TODO Auto-generated method stub
-		return null;
+	public String Requrimiento5(String horaIni, String horaFin) {
+			String retorno = "++++++++++Requerimiento 5+++++++++\n";
+			RedBlackTree<String, ArregloDinamico<Repeticion>> arbolHoras = new RedBlackTree<>();
+			//Generar el arbol de horas/fechas
+			for(int i=1;i<=lista.size();i++){
+				Repeticion nuevo = lista.getElement(i);		
+				String llave = nuevo.darCreated_at().getHours()+":"+nuevo.darCreated_at().getMinutes(); 
+				ArregloDinamico<Repeticion> valor = arbolHoras.get(llave);		    																	   
+				if(valor == null){
+					ArregloDinamico<Repeticion> v = new ArregloDinamico<Repeticion>();
+					v.addLast(nuevo);
+					arbolHoras.put(llave, v);
+				}
+				else{
+					valor.addLast(nuevo);
+					arbolHoras.put(llave, valor);
+				}
+			}
+			ILista<ArregloDinamico<Repeticion>> reproduccionesEnIntervalo = arbolHoras.valuesInRange(horaIni, horaFin);
+			ArregloDinamico<Repeticion> listaArreglada = new ArregloDinamico<>();
+			for(int i=1;i<=reproduccionesEnIntervalo.size();i++){
+				ArregloDinamico<Repeticion> listaAnidada = reproduccionesEnIntervalo.getElement(i);
+				for(int j=1;j<=listaAnidada.size();j++){
+					listaArreglada.addLast(listaAnidada.getElement(j));
+				}
+			}
+			retorno = retorno+"total de eventos de escucha en el intervalo: "+listaArreglada.size()+"\n";
+			RedBlackTree<Double, ArregloDinamico<Repeticion>> arbolTempo= new RedBlackTree<Double, ArregloDinamico<Repeticion>>();
+			for(int i=1;i<=listaArreglada.size();i++){
+				Repeticion nuevo = listaArreglada.getElement(i);		
+				double llave = nuevo.darTempo(); 
+				ArregloDinamico<Repeticion> valor = arbolTempo.get(llave);		    																	   
+				if(valor == null){
+					ArregloDinamico<Repeticion> v = new ArregloDinamico<Repeticion>();
+					v.addLast(nuevo);
+					arbolTempo.put(llave, v);
+				}
+				else{
+					valor.addLast(nuevo);
+					arbolTempo.put(llave, valor);
+				}			
+			}
+			ArregloDinamico<String> gnros = generos.keySet();  
+			int valMax = 0;
+			ArregloDinamico<Repeticion> mayor = new ArregloDinamico<>();
+			String generoMax = "";
+			for(int i=1; i<=gnros.size();i++){
+				String gnroActual = gnros.getElement(i);
+				ArregloDinamico<Double> tiempos = generos.get(gnroActual);
+				ILista<ArregloDinamico<Repeticion>> listaTempo = arbolTempo.valuesInRange(tiempos.getElement(1), tiempos.getElement(2));
+				ArregloDinamico<Repeticion> listaArregladaTempo = new ArregloDinamico<>();
+				for(int k=1;k<=reproduccionesEnIntervalo.size();k++){
+					ArregloDinamico<Repeticion> listaAnidada = reproduccionesEnIntervalo.getElement(k);
+					for(int j=1;j<=listaAnidada.size();j++){
+						listaArregladaTempo.addLast(listaAnidada.getElement(j));
+					}
+				}
+				if(listaArregladaTempo.size()>valMax){
+					valMax = listaArregladaTempo.size();
+					mayor = listaArregladaTempo;
+					generoMax = gnroActual;
+				}
+			}
+			retorno = retorno+"El genero mas eschuchado fue: "+ generoMax+" Con "+valMax+" eventos de escucha\n";	
+			
+			TablaHashSeparateChaining<String, Repeticion> cancionesUnicas = new TablaHashSeparateChaining<>(valMax+1, 1.5);
+			for(int i=1; i<=mayor.size(); i++){
+				Repeticion actual = mayor.getElement(i); 
+				cancionesUnicas.put(actual.darTrack_id(), actual);			
+			}
+			ArregloDinamico<String> canciones = (ArregloDinamico<String>) cancionesUnicas.keySet();
+			retorno = retorno+"============ ANALISIS==============\nHay: "+canciones.size()+" canciones unicas\n";
+			for(int i=1; i<=10;i++){
+				String actual = canciones.getElement(i);
+				ArregloDinamico<String> tags = tablaTags.get(actual);
+				double sumaVader = 0;
+				if(tags!=null){
+				for(int j=1; j<=tags.size();j++){
+					sumaVader += valoresSentimentales.get(tags.getElement(j));
+				}
+				}
+				int t = (tags!=null)?tags.size():1;
+				retorno = retorno+" Cancion "+i+": "+canciones.getElement(i)+"promedio de vader: "+ (sumaVader/t)+"\n";
+			}
+			return retorno;
 	}
 }

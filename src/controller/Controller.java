@@ -79,6 +79,9 @@ public class Controller {
 																		 Double.parseDouble(ans[3]));
 						view.imprimirVideoRequerimineto(este, este.size());
 					}
+					else if(res==3){
+						
+					}
 					else if(res==4){
 						view.printMessage("1.Req\n2.Agregar nuevo genero");
 						int res2 = lector.nextInt();
