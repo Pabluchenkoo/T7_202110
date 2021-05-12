@@ -241,6 +241,21 @@ public class ListaEncadenada <T extends Comparable<T>> implements ILista<T>
 		}
 		return listaDevolver;
 	}
+
+	@Override
+	public ILista<T> subList2(int numElement) {
+		ListaEncadenada<T> newa = new ListaEncadenada<>();
+		if(numElement==tamanio)
+			newa = this;
+		else{
+			NodoLista<T> t = primero;
+			for(int i=0; i<numElement; i++){
+				newa.addLast(t.darInformation());
+				t = t.darSiguiente();
+			}
+		}
+		return newa;
+	}
 	
 	
 }

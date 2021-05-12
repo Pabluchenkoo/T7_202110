@@ -363,6 +363,5 @@ public class TablaHashLinearProbing<K extends Comparable<K>, V extends Comparabl
 		assert factorDeCarga < 0.75;
 		assert factorDeCarga >= 0;
 	}
-	
-	
+
 }
