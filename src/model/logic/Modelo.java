@@ -54,6 +54,11 @@ public class Modelo {
 	private TablaHashLinearProbing< String , String> tablaLinear;
 	private TablaHashSeparateChaining<String , String> tablaSeparate;
 	
+	private ArregloDinamico<ContextContentFeatures> contextContent;
+
+	private ArregloDinamico<String> artistas;
+	private ArregloDinamico<String> canciones;
+	
 //	private Ordenamiento<YouTubeVideo> ordenamiento;
 	
 //	private Ordenamiento<YouTubeVideo> ordenamiento;
@@ -83,7 +88,8 @@ public class Modelo {
 		return datos.size();
 	}
 
-	public void cargarArbol()throws Exception
+	public void cargarDatos() throws Exception
+	
 {
 		
 		try
@@ -180,58 +186,37 @@ public class Modelo {
 							tempo, acousticness, energy, mode, key, artistId,
 							tweetLang, trackId, createdAt, language, timeZone,userId,id );
 					
-//					String llave = videoID;
-					
-//					if( tablaLinear.contains(llave) )
-//					{
-//						String numeroActualID = tablaLinear.get(llave);
-//						tablaLinear.put(llave, numeroActualID + 1 ); 
-//						
-//					}
-//					else
-//					{		
-//						
-//						tablaLinear.put(llave, title);
-//						
-//					}
-//					vidios.addLast(video);
-					contador++;
-//					if(categorias.contains(categoryID))
-//					{
-//						
-//					}
-//					else if(contador >= 2) 
-//					{
-//						categorias.add(categoryID);
-//					}
-					
-//					System.out.println(categoryID);
-//					ordenamiento.ordenarQuickSort(vidios, vidios.darElemento(1).getCategoryID(), true);
-					
-//					if(contador==2)
-//					{
-//						System.out.println(country);
-//						System.out.println("Primer Video :- \n" + "Titulo:" + title +"\n Titulo Canal:" +channelTitle +"\n fecha Trending:"+ trendingDate +"\n pais:"+ country +"\n # Vistas:"+ views +"\n # Likes:"+ likes +"\n # Dislikes:"+ dislikes);
-//					}
-						 
-		     }
-			 
-			 System.out.println("\nLista de categorias:- ");
-			 for (int i =0; i < categorias.size();i++)
-			 {
-				 System.out.println(categorias.get(i).getiD() + "-" + categorias.get(i).getName());
-			 }
 
-			 
-		     System.out.println("Numero de datos leidos: " + contador);
-		     
-		
-		}     
-			catch(Exception e)
-			{
-				e.printStackTrace();
-			}
-	}
+					contextContent.addLast(entrada);
+					contador++;
+					
+					System.out.println("Registros Cargados: " + contador);
+					
+					if(artistas.isPresent(userId) < 0)
+					{
+						artistas.addLast(userId);
+					}
+					else if(canciones.isPresent(trackId) < 0)
+					{
+						canciones.addLast(trackId);
+					}
+	    		  
+			 }  
+				 
+			
+					
+		}	
+		finally
+		{
+			
+		}
+}
+	
+
+					
+						 
+		  
+
 	public void cargarCategorias() throws FileNotFoundException
 	{
 		try

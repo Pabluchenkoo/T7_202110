@@ -1,6 +1,6 @@
 package model.logic;
 
-public class ContextContentFeatures 
+public class ContextContentFeatures implements Comparable<ContextContentFeatures> 
 {
 	private String instrumentalness;
 	
@@ -220,6 +220,12 @@ public class ContextContentFeatures
 
 	public void setId(String id) {
 		id = id;
+	}
+
+	@Override
+	public int compareTo(ContextContentFeatures o) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	
