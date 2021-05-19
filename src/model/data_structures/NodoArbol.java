@@ -161,13 +161,13 @@ public class NodoArbol<K extends Comparable<K>, V> implements Comparable<NodoArb
 		return nodo;
 	}
 	
-	public ArregloDinamico<K> keysInRange(ArregloDinamico<K> list, K i, K f){
-		int menor = f.compareTo(llave);
-		int mayor = i.compareTo(llave);
-		if(menor<0) izquierdo.keysInRange(list, i, f);
-		if(menor<=0 && mayor>=0) list.addLast(llave);
-		if(mayor>0) derecho.keysInRange(list, i, f);
-		return list;
+	public ArregloDinamico<K> keysInRange(ArregloDinamico<K> lista, K init, K end){
+		int menor = end.compareTo(llave);
+		int mayor = init.compareTo(llave);
+		if(menor<0) izquierdo.keysInRange(lista, init, end);
+		if(menor<=0 && mayor>=0) lista.addLast(llave);
+		if(mayor>0) derecho.keysInRange(lista, init, end);
+		return lista;
 	}
 
 	
