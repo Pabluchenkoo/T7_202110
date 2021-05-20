@@ -84,7 +84,7 @@ public class TablaSimbolos<K extends Comparable<K>, V> implements ITablaSimbolos
 		int p = nextPrime(tabla.size());
 		int m = tot;
 		int h = key.hashCode();
-		
+
 		return (Math.abs(h)%m);
 	}
 	

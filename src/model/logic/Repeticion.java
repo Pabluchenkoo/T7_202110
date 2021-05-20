@@ -6,15 +6,10 @@ import model.data_structures.ArregloDinamico;
 
 public class Repeticion implements Comparable<Repeticion>{
 
-	private double instrumentalness;
-	private double liveness;
-	private double speechiness;
-	private double danceability;
-	private double valence;
+	
 	private double loudness;
 	private double tempo;
-	private double acousticness;
-	private double energy;
+
 	private int mode;
 	private int key;
 	private String artist_id;
@@ -28,17 +23,10 @@ public class Repeticion implements Comparable<Repeticion>{
 	private ArregloDinamico<Double> caracteristicas;
 	
 	public Repeticion(ArregloDinamico<Double> caracteristicas,double loudness,double tempo, int mode, int key, String artist_id, String tweet_lang,String track_id, Date created_at, String lang, String time_zone, int user_id, int id) {
-	
 		
-		this.instrumentalness = instrumentalness;
-		this.liveness = liveness;
-		this.speechiness = speechiness;
-		this.danceability = danceability;
-		this.valence = valence;
+		this.caracteristicas =  caracteristicas;
 		this.loudness = loudness;
 		this.tempo = tempo;
-		this.acousticness = acousticness;
-		this.energy = energy;
 		this.mode = mode;
 		this.key = key;
 		this.artist_id = artist_id;
@@ -49,78 +37,16 @@ public class Repeticion implements Comparable<Repeticion>{
 		this.time_zone = time_zone;
 		this.user_id = user_id;
 		this.id = id;
+	}
+
+	public ArregloDinamico<Double> darCaracteristicas(){
+		return caracteristicas;
+	}
+	
+	public void asignarCaracteristicas(ArregloDinamico caracteristicas){
 		this.caracteristicas = caracteristicas;
 	}
 
-	/**
-	 * @return the instrumentalness
-	 */
-	public double darInstrumentalness() {
-		return instrumentalness;
-	}
-
-	/**
-	 * @param instrumentalness the instrumentalness to asignar
-	 */
-	public void asignarInstrumentalness(double instrumentalness) {
-		this.instrumentalness = instrumentalness;
-	}
-
-	/**
-	 * @return the liveness
-	 */
-	public double darLiveness() {
-		return liveness;
-	}
-
-	/**
-	 * @param liveness the liveness to asignar
-	 */
-	public void asignarLiveness(double liveness) {
-		this.liveness = liveness;
-	}
-
-	/**
-	 * @return the speechiness
-	 */
-	public double darSpeechiness() {
-		return speechiness;
-	}
-
-	/**
-	 * @param speechiness the speechiness to asignar
-	 */
-	public void asignarSpeechiness(double speechiness) {
-		this.speechiness = speechiness;
-	}
-
-	/**
-	 * @return the danceability
-	 */
-	public double darDanceability() {
-		return danceability;
-	}
-
-	/**
-	 * @param danceability the danceability to asignar
-	 */
-	public void asignarDanceability(double danceability) {
-		this.danceability = danceability;
-	}
-
-	/**
-	 * @return the valence
-	 */
-	public double darValence() {
-		return valence;
-	}
-
-	/**
-	 * @param valence the valence to asignar
-	 */
-	public void asignarValence(double valence) {
-		this.valence = valence;
-	}
 
 	/**
 	 * @return the loudness
@@ -150,33 +76,6 @@ public class Repeticion implements Comparable<Repeticion>{
 		this.tempo = tempo;
 	}
 
-	/**
-	 * @return the acousticness
-	 */
-	public double darAcousticness() {
-		return acousticness;
-	}
-
-	/**
-	 * @param acousticness the acousticness to asignar
-	 */
-	public void asignarAcousticness(double acousticness) {
-		this.acousticness = acousticness;
-	}
-
-	/**
-	 * @return the energy
-	 */
-	public double darEnergy() {
-		return energy;
-	}
-
-	/**
-	 * @param energy the energy to asignar
-	 */
-	public void asignarEnergy(double energy) {
-		this.energy = energy;
-	}
 
 	/**
 	 * @return the mode
@@ -318,18 +217,11 @@ public class Repeticion implements Comparable<Repeticion>{
 		this.id = id;
 	}
 
+
 	@Override
-	public int compareTo(Repeticion o) {
+	public int compareTo(Repeticion arg0) {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-	
-	public ArregloDinamico<Double> darCaracteristicas(){
-		return caracteristicas;
-	}
-	
-	public void asignarCaracteristicas(ArregloDinamico caracteristicas){
-		this.caracteristicas = caracteristicas;
 	}
 	
 	

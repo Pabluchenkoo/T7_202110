@@ -57,10 +57,8 @@ public class Controller {
 					e1.printStackTrace();
 				}
 					
-				break;
-				
+				break;				
 				case 2:
-
 					view.printMessage("Seleccione un requerimiento");
 					int res = lector.nextInt();
 					if(res==1){
@@ -79,9 +77,6 @@ public class Controller {
 																		 Double.parseDouble(ans[3]));
 						view.imprimirVideoRequerimineto(este, este.size());
 					}
-					else if(res==3){
-						
-					}
 					else if(res==4){
 						view.printMessage("1.Req\n2.Agregar nuevo genero");
 						int res2 = lector.nextInt();
@@ -94,15 +89,15 @@ public class Controller {
 						}
 						if(res2==2){
 						view.printMessage("Ingrese el/los generos que desea buscar(genero1,generos2,...)");
-						view.printMessage(modelo.req4(lector.next()));
+						view.printMessage(modelo.requerimiento4(lector.next()));
 						}
 					}
 					else if(res==5){
 						view.printMessage("Ingrese los intervalos de tiempo(00:00,00:00");
 						String[] aux = lector.next().split(",");
-						view.printMessage(modelo.Req5(aux[0], aux[1]));
+						view.printMessage(modelo.Requrimiento5(aux[0], aux[1]));
 					}
-
+				
 					break;					
 				case 3:
 					
